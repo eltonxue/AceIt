@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "eltonxue",
+    "password": null,
+    "database": "main",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "eltonxue",
+    "password": null,
+    "database": "main",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "eltonxue",
+    "password": null,
+    "database": "main",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
