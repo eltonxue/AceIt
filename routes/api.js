@@ -13,8 +13,7 @@ router.post('/tone-analyzer', function(req, res, next) {
 
   const url = `https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21&text=${text}`;
 
-  console.log(url);
-
+  // Retrieves data from API
   axios
     .get(url, {
       auth: {
