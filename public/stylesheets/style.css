@@ -1,12 +1,43 @@
 body {
   font-family: 'Titillium Web', sans-serif;
+
+  padding: 0px;
+  color: white;
 }
 
 a {
   color: #00b7ff;
 }
 
-/* Reusable */
+ul {
+  list-style-type: none;
+}
+
+.copyright {
+  font-style: italic;
+  color: white;
+  text-align: center;
+}
+
+/* Text */
+.title {
+  text-align: center;
+  font-size: 50px;
+  padding-bottom: 10px;
+}
+.display-3 {
+  font-size: 100px;
+}
+
+.display-4 {
+  font-size: 40px;
+}
+
+.lead {
+  font-size: 30px;
+}
+
+/* Buttons */
 .btn-1 {
   background-color: #0bb4e0;
   padding: 10px 15px;
@@ -16,7 +47,14 @@ a {
 
 .btn-1:hover {
   cursor: pointer;
-  background-color: #00c1ff;
+  color: black;
+}
+
+/* Positioning */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Menu */
@@ -50,10 +88,96 @@ a {
 }
 
 .active {
-  background-color: black;
+  background-color: black !important;
 }
 
 .active > .nav-link {
   color: white !important;
 }
+
 /* Index Page */
+#popular-questions-label {
+  text-shadow: 2px 2px black;
+  color: white;
+  font-weight: 800;
+}
+
+#learn-more-container {
+  background-color: #282e37;
+  padding: 30px;
+}
+
+#learn-more-container > h1 {
+  border-bottom: 1px solid #0bb4e0;
+}
+#learn-more-container > p {
+  font-size: 25px;
+  line-height: 35px;
+  text-align: center;
+  padding: 10px 0px;
+}
+
+.jumbotron {
+  background-image: url('../images/cover.png');
+  background-position: center;
+  height: 100%;
+  background-size: cover;
+  margin-top: 75px;
+  margin-bottom: 0px;
+}
+
+.jumbotron > .flex-center {
+  color: white;
+}
+
+#popular-questions {
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Roboto Condensed', serif;
+  height: 650px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.question-card {
+  background-color: #daeefb;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.date {
+  text-align: center;
+  margin: 0px;
+  background-color: #0a0a0a;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  font-size: 30px;
+  padding: 26px 10px;
+  word-break: break-all;
+  border-right: 5px solid #0bb4e0;
+}
+
+.question {
+  font-size: 25px;
+  text-align: center;
+  padding: 10px 5px;
+  color: black;
+}
+
+@media only screen and (max-width: 1700px) {
+  .pl-30 {
+    padding: 30px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .date {
+    border-radius: 10px;
+    border-right: 0px;
+    border-bottom: 5px solid #0bb4e0;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

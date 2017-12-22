@@ -7,13 +7,62 @@
   <body>
     <% include ./navigation %>
 
-
-
+    <div class="jumbotron jumbotron-fluid row">
+      <div class="col-xl-6 flex-center">
+        <div class="pl-30">
+          <h1 class="display-3">Ace Your Interview</h1>
+          <p class="lead">Land your dream job.</p>
+          <p class="lead">
+            <a class="btn btn-1 btn-lg" href="#" role="button">Learn more</a>
+          </p>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div class="row pl-30">
+          <div class="col-md-12">
+            <h1 class="display-4" id="popular-questions-label">Here's What People Are Asking.</h1>
+          </div>
+          <ul class="col-md-12" id="popular-questions">
+              <li class="question-card flex-center row">
+                <a class="col-md-3 date" href="soniaxu96">soniaxu96 </a>
+                <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
+              </li>
+              <li class="question-card flex-center row">
+                <div class="col-md-3 date">eltonxue11 </div>
+                <div class="col-md-9 question">What is your greatest strength?</div>
+              </li>
+              <li class="question-card flex-center row">
+                <div class="col-md-3 date">milaxu43 </div>
+                <div class="col-md-9 question">Why are you leaving or have left your job?</div>
+              </li>
+              <li class="question-card flex-center row">
+                <div class="col-md-3 date">chloexue43111 </div>
+                <div class="col-md-9 question">How do you handle stress and pressure?</div>
+              </li>
+              <li class="question-card flex-center row">
+                <div class="col-md-3 date">soniaxu96 </div>
+                <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="learn-more-container">
+      <div class="col-lg-4"></div>
+      <h1 class="title col-lg-4">What is <span class="fa fa-font">ceIt?</h1>
+      <div class="col-lg-4"></div>
+      <div class="col-lg-2"></div>
+      <p class="col-lg-8">
+        Have you ever had trouble with your interviews? Do your nerves make you seem less qualified than you actually are? <span class="fa fa-font"></span>ceIt is a web application that looks to solve these problems. It allows you to create your own custom question banks and conduct mock interviews with them. The application records your response, analyzes it, and then provides feedback that range from the level of emotion in your words to how confident you are.
+      </p>
+      <div class="col-lg-2"></div>
+      <p class="col-sm-12 copyright">© Copyright 2017 Minder</p>
+    </div>
 
   </body>
   <footer>
 
-  <% include ./footer %>
+    <% include ./footer %>
     <script src="javascripts/index.js"></script>
   </footer>
 </html>
