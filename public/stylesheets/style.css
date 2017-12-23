@@ -44,11 +44,19 @@ ul {
   background-color: #0bb4e0;
   padding: 10px 15px;
   font-size: 20px;
-  color: white; }
+  color: white;
+  margin: 5px 0px; }
 
-.btn-1:hover {
+.btn:hover {
   cursor: pointer;
   color: black; }
+
+.btn-2 {
+  background-color: #66bb75;
+  padding: 10px 15px;
+  font-size: 20px;
+  color: white;
+  margin: 20px 0px 0px 0px; }
 
 /* Positioning */
 .flex-center {
@@ -56,21 +64,34 @@ ul {
   justify-content: center;
   align-items: center; }
 
-/* Menu */
+.flex-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; }
+
+/* Navigation */
 #search > input {
   padding: 11px 15px; }
-
-#navbarNav {
-  margin: 0px; }
 
 .navbar-brand {
   font-size: 50px;
   color: white !important;
-  padding: 0px 50px; }
+  display: inline-block; }
+
+.fa-bars {
+  color: #0bb4e0; }
 
 .navbar {
   background-color: #1f1f1f;
   padding: 0px; }
+
+.navbar-toggler {
+  display: inline-block;
+  float: right;
+  padding: 20px; }
+
+.offset-navbar {
+  margin-top: 84px; }
 
 .nav-link {
   color: #a0a0a0 !important; }
@@ -80,7 +101,8 @@ ul {
 
 .nav-item {
   font-size: 22px;
-  padding: 15px; }
+  padding: 10px;
+  margin: 5px; }
 
 .active {
   background-color: black !important; }
@@ -111,7 +133,6 @@ ul {
 .jumbotron {
   background-image: url("../images/cover.png");
   background-position: center;
-  height: 100%;
   background-size: cover;
   margin-top: 75px;
   margin-bottom: 0px;
@@ -167,6 +188,41 @@ ul {
 
 .authentication-box * input {
   font-size: 22px; }
+
+/* Question Banks Page */
+.fa-plus-square {
+  color: white;
+  transition-property: color;
+  transition-duration: .1s;
+  transition-timing-function: linear;
+  margin: 5px; }
+
+.fa-plus-square:hover {
+  cursor: pointer;
+  color: #0bb4e0; }
+
+.question-banks-container {
+  padding: 20px 0px;
+  width: 100%; }
+
+.question-bank-card {
+  background-color: #595e6b;
+  padding: 30px;
+  margin: 10px 5px;
+  border-radius: 10px;
+  width: 100%; }
+
+.question-bank-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; }
+
+.question-bank-questions {
+  margin: 20px; }
+
+.question-bank-questions > li {
+  font-size: 25px;
+  color: #282e37; }
 
 /* Media Queries & Webkit */
 @media only screen and (max-width: 1700px) {

@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { loggedIn: false });
+  res.render('index', { loggedIn: true });
 });
 
 // Gets registration page

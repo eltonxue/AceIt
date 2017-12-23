@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ./header %>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <% include ./navigation-logged-in %>
+
+    <div class="center-section offset-navbar">
+      <div class="row mt-4">
+        <div class="offset-md-2 col-md-6">
+          <h1>Question Banks</h1>
+        </div>
+        <div class="col-md-2 flex-right">
+          <span class="fa fa-plus-square fa-3x" id="add-bank"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="offset-md-2 col-md-8">
+          <ul class="question-banks-container">
+            <li class="question-bank-card">
+              <div class="question-bank-label">
+                <span class="fa fa-question-circle-o fa-4x"></span>
+                <h1>Technical Questions</h1>
+                <div class="btn btn-1 edit-qustion-bank">Edit</div>
+              </div>
+              <ul class="list-group question-bank-questions">
+                <li class="list-group-item">Tell me about yourself.</li>
+                <li class="list-group-item list-group-item-info">What is the importance of closures?</li>
+                <li class="list-group-item">What are some of the new features included in ES6?</li>
+                <li class="list-group-item list-group-item-info">What are the 4 principles of object-oriented programming?</li>
+                <div class="btn btn-2 add-question-to-bank">Add Question</div>
+              </ul>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+  <footer>
+
+    <% include ./footer %>
+    <script src="javascripts/index.js"></script>
+  </footer>
+</html>
