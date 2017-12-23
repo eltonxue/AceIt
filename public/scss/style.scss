@@ -1,19 +1,21 @@
 $primary-blue: #0bb4e0;
 $primary-green: #66bb75;
+$primary-red: #d43326;
 $primary-dark: #1f1f1f;
 $secondary-dark: #282e37;
 $modern-dark: #595e6b;
+$menu-dark: #a0a0a0;
 $primary-font: 'Titillium Web', sans-serif;
 $secondary-font: 'Roboto Condensed', sans-serif;
 
 html {
   margin: 0px;
-  height: 100%;
 }
 body {
   font-family: $primary-font;
   color: white;
   height: 100%;
+  background-color: $secondary-dark;
 }
 
 a {
@@ -28,13 +30,13 @@ ul {
   font-style: italic;
   color: white;
   text-align: center;
+  margin-bottom: 50px;
 }
 
 /* Sections */
 .center-section {
-  background-color: $secondary-dark;
   padding: 20px;
-  height: 100%;
+  margin-top: 200px;
 }
 
 /* Text */
@@ -58,10 +60,13 @@ ul {
 /* Buttons */
 .btn-1 {
   background-color: $primary-blue;
+  margin: 5px 0px;
+}
+
+.btn {
   padding: 10px 15px;
   font-size: 20px;
   color: white;
-  margin: 5px 0px;
 }
 
 .btn:hover {
@@ -71,10 +76,12 @@ ul {
 
 .btn-2 {
   background-color: $primary-green;
-  padding: 10px 15px;
-  font-size: 20px;
-  color: white;
   margin: 20px 0px 0px 0px;
+}
+
+.btn-3 {
+  background-color: $primary-red;
+  margin: 5px 5px;
 }
 
 /* Positioning */
@@ -103,7 +110,7 @@ ul {
 }
 
 .fa-bars {
-  color: $primary-blue;
+  color: white;
 }
 
 .navbar {
@@ -114,7 +121,10 @@ ul {
 .navbar-toggler {
   display: inline-block;
   float: right;
-  padding: 20px;
+  padding: 10px;
+  margin: 10px;
+  background-color: $modern-dark;
+  border-radius: 10px;
 }
 
 .offset-navbar {
@@ -122,7 +132,7 @@ ul {
 }
 
 .nav-link {
-  color: #a0a0a0 !important;
+  color: $menu-dark !important;
 }
 
 .nav-link:hover {
@@ -157,7 +167,7 @@ ul {
 }
 
 #learn-more-container > h1 {
-  border-bottom: 1px solid $primary-blue;
+  border-bottom: 3px solid $primary-blue;
 }
 #learn-more-container > p {
   font-size: 25px;
@@ -257,7 +267,7 @@ ul {
 .question-bank-card {
   background-color: $modern-dark;
   padding: 30px;
-  margin: 10px 5px;
+  margin: 15px 5px 40px 5px;
   border-radius: 10px;
   width: 100%;
 }

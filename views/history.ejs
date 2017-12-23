@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ./header %>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <% include ./navigation-logged-in %>
+
+    <div class="center-section offset-navbar">
+      <div class="row mt-4">
+        <div class="offset-md-2 col-md-6">
+          <h1>History</h1>
+        </div>
+        <div class="col-md-2 flex-right">
+          <div class="btn btn-3" id="clear-history">Clear</div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+  <footer>
+
+    <% include ./footer %>
+    <script src="javascripts/index.js"></script>
+  </footer>
+</html>
