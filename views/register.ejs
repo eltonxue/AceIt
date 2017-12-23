@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ./header %>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <% include ./navigation-logged-out %>
+
+    <div class="center-section row">
+      <div class="offset-md-2 col-md-2 flex-center">
+        <h1 class="authentication-label">Registration</h1>
+      </div>
+      <div class="col-md-6 flex-center">
+        <form class="authentication-box" id="register">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username-input" placeholder="eltonxue12">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email-input" placeholder="elxue@aceit.com">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password-input">
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" class="form-control" id="confirm-password-input">
+          </div>
+          <button class="btn btn-1 float-right" type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+
+  </body>
+  <footer>
+
+    <% include ./footer %>
+    <script src="javascripts/index.js"></script>
+  </footer>
+</html>

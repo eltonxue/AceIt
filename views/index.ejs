@@ -5,7 +5,11 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
-    <% include ./navigation %>
+    <% if (loggedIn) { %>
+      <% include ./navigation-logged-in %>
+    <% } else { %>
+      <% include ./navigation-logged-out %>
+    <% } %>
 
     <div class="jumbotron jumbotron-fluid row">
       <div class="col-xl-6 flex-center">
@@ -24,25 +28,26 @@
           </div>
           <ul class="col-md-12" id="popular-questions">
               <li class="question-card flex-center row">
-                <a class="col-md-3 date" href="soniaxu96">soniaxu96 </a>
+                <div class="col-md-3 username">soniaxu96 </div>
                 <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
               </li>
               <li class="question-card flex-center row">
-                <div class="col-md-3 date">eltonxue11 </div>
-                <div class="col-md-9 question">What is your greatest strength?</div>
-              </li>
-              <li class="question-card flex-center row">
-                <div class="col-md-3 date">milaxu43 </div>
-                <div class="col-md-9 question">Why are you leaving or have left your job?</div>
-              </li>
-              <li class="question-card flex-center row">
-                <div class="col-md-3 date">chloexue43111 </div>
-                <div class="col-md-9 question">How do you handle stress and pressure?</div>
-              </li>
-              <li class="question-card flex-center row">
-                <div class="col-md-3 date">soniaxu96 </div>
+                <div class="col-md-3 username">soniaxu96 </div>
                 <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
               </li>
+              <li class="question-card flex-center row">
+                <div class="col-md-3 username">soniaxu96 </div>
+                <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
+              </li>
+              <li class="question-card flex-center row">
+                <div class="col-md-3 username">soniaxu96 </div>
+                <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
+              </li>
+              <li class="question-card flex-center row">
+                <div class="col-md-3 username">soniaxu96 </div>
+                <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
+              </li>
+
           </ul>
         </div>
       </div>
