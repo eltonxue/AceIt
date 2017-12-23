@@ -137,7 +137,6 @@ ul {
 .jumbotron {
   background-image: url("../images/cover.png");
   background-position: center;
-  height: 100%;
   background-size: cover;
   margin-top: 75px;
   margin-bottom: 0px;
