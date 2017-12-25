@@ -17,7 +17,8 @@ ul {
   font-style: italic;
   color: white;
   text-align: center;
-  margin-bottom: 50px; }
+  margin-bottom: 50px;
+  margin-top: 20px; }
 
 /* Sections */
 .center-section {
@@ -37,7 +38,8 @@ ul {
   font-size: 40px; }
 
 .lead {
-  font-size: 30px; }
+  font-size: 30px;
+  text-align: center; }
 
 /* Buttons */
 .btn-1 {
@@ -59,7 +61,15 @@ ul {
 
 .btn-3 {
   background-color: #d43326;
-  margin: 5px 5px; }
+  margin: 5px; }
+
+.btn-4 {
+  background-color: #9b90d9;
+  margin: 5px; }
+
+.btn-5 {
+  background-color: #65c8ce;
+  margin: 20px 0px 0px 0px; }
 
 /* Positioning */
 .flex-center {
@@ -96,11 +106,17 @@ ul {
   background-color: #595e6b;
   border-radius: 10px; }
 
+.navbar-toggler:hover {
+  cursor: pointer; }
+
 .offset-navbar {
   margin-top: 84px; }
 
 .nav-link {
-  color: #a0a0a0 !important; }
+  color: #a0a0a0 !important;
+  transition-property: color;
+  transition-duration: .1s;
+  transition-timing-function: linear; }
 
 .nav-link:hover {
   color: white !important; }
@@ -124,11 +140,11 @@ ul {
 
 #learn-more-container {
   background-color: #282e37;
-  padding: 30px 0px 30px 0px;
+  padding: 30px;
   margin: 0px; }
 
 #learn-more-container > h1 {
-  border-bottom: 3px solid #0bb4e0; }
+  border-bottom: 2px solid #0bb4e0; }
 
 #learn-more-container > p {
   font-size: 25px;
@@ -154,8 +170,14 @@ ul {
 
 .question-card {
   background-color: #daeefb;
-  margin: 20px;
-  border-radius: 10px; }
+  margin: 30px;
+  border-radius: 10px;
+  transition-property: box-shadow;
+  transition-duration: .1s;
+  transition-timing-function: linear; }
+
+.question-card:hover {
+  box-shadow: 0px 0px 25px white; }
 
 .username {
   text-align: center;
@@ -226,6 +248,45 @@ ul {
 .question-bank-questions > li {
   font-size: 25px;
   color: #282e37; }
+
+/* Practice */
+#record-response {
+  margin-top: 60px; }
+
+#record-response > div {
+  text-align: center;
+  margin: 10px; }
+
+#timer {
+  font-size: 200px; }
+
+.feedback-card {
+  background-color: #1f1f1f;
+  border-radius: 10px;
+  padding: 50px;
+  margin: 50px; }
+
+.feedback-card > h1 {
+  text-align: center;
+  margin: 10px; }
+
+.choose-card {
+  transition-property: box-shadow;
+  transition-duration: .1s;
+  transition-timing-function: linear; }
+
+.choose-card:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 50px white; }
+
+.fa-arrow-circle-right {
+  transition-property: color;
+  transition-duration: .1s;
+  transition-timing-function: linear; }
+
+.fa-arrow-circle-right:hover {
+  color: #595e6b;
+  cursor: pointer; }
 
 /* Media Queries & Webkit */
 @media only screen and (max-width: 1700px) {

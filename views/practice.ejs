@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ./header %>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  </head>
+  <body>
+    <% include ./navigation-logged-in %>
+
+    <div class="center-section offset-navbar" id="main-container">
+      <div class="row mt-4">
+        <div class="offset-md-2 col-md-6">
+          <h1>Choose a Question Bank</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="offset-md-2 col-md-8">
+          <ul class="question-banks-container">
+            <li class="choose-card question-bank-card">
+              <div class="question-bank-label">
+                <h1>Technical Questions</h1>
+              </div>
+              <ul class="list-group question-bank-questions">
+                <li class="list-group-item">Tell me about yourself.</li>
+                <li class="list-group-item list-group-item-info">What is the importance of closures?</li>
+                <li class="list-group-item">What are some of the new features included in ES6?</li>
+                <li class="list-group-item list-group-item-info">What are the 4 principles of object-oriented programming?</li>
+              </ul>
+            </li>
+            <li class="choose-card question-bank-card">
+              <div class="question-bank-label">
+                <h1>Basic Team Questions</h1>
+              </div>
+              <ul class="list-group question-bank-questions">
+                <li class="list-group-item">How well do you work in a team?</li>
+                <li class="list-group-item list-group-item-info">What would you do if a team member confronts you?</li>
+                <li class="list-group-item">In a team scenario, are you more of a leader or a follower?</li>
+              </ul>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+
+      <div class="row flex-center" id="record-response">
+        <div class="col-md-12" id="timer">
+          00:00
+        </div>
+
+        <div class="col-md-12" id="question">
+          <h1>How well do you work in a team?</h1>
+        </div>
+        <div class="col-md-12" id="control-buttons">
+          <div class="btn btn-2 mt-0" id="start">START</div>
+          <div class="btn btn-3" id="stop">STOP</div>
+        </div>
+      </div>
+    </div>
+    <div class="row flex-center" id="feedback-container">
+      <div class="feedback-card">
+        <h1>"How well do you work in a team?"</h1>
+        <canvas id="feedback-chart" width="800" height="400"></canvas>
+      </div>
+      <div class="col-md-12 flex-center">
+        <span class="fa fa-arrow-circle-right fa-5x"></span>
+    </div>
+
+  </body>
+  <footer>
+
+    <% include ./footer %>
+    <script src="javascripts/practice.js"></script>
+  </footer>
+</html>
