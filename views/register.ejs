@@ -2,7 +2,6 @@
 <html>
   <head>
     <% include ./header %>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <% include ./navigation-logged-out %>
@@ -16,24 +15,24 @@
           <div class="form-group">
             <span class="fa fa-user-circle-o mr-2"></span>
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username-input" placeholder="eltonxue12">
+            <input type="text" class="form-control" id="username">
           </div>
           <div class="form-group">
             <span class="fa fa-envelope mr-2"></span>
             <label for="email">Email</label>
-            <input type="text" class="form-control" id="email-input" placeholder="elxue@aceit.com">
+            <input type="text" class="form-control" id="email">
           </div>
           <div class="form-group">
             <span class="fa fa-lock mr-2"></span>
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password-input">
+            <input type="password" class="form-control" id="password">
           </div>
           <div class="form-group">
             <span class="fa fa-lock mr-2"></span>
             <label for="confirm-password">Confirm Password</label>
-            <input type="password" class="form-control" id="confirm-password-input">
+            <input type="password" class="form-control" id="confirm-password">
           </div>
-          <button class="btn btn-1 float-right" type="submit">Register</button>
+          <button class="btn btn-1 float-right" id="register-button">Register</button>
         </form>
       </div>
     </div>
@@ -42,6 +41,6 @@
   <footer>
 
     <% include ./footer %>
-    <script src="javascripts/index.js"></script>
+    <script src="javascripts/register.js"></script>
   </footer>
 </html>

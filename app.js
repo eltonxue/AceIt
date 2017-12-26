@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var Sequelize = require('sequelize');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -14,46 +13,7 @@ var auth = require('./routes/auth');
 var app = express();
 
 // setup sequelize database
-const sequelize = new Sequelize('main', 'eltonxue', null, {
-  host: 'localhost',
-  dialect: 'postgres',
-
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-});
-
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Sequelize successfully connected with database: 'main'");
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
-
-// Create model?
-
-const User = sequelize.define('user', {
-  email: {
-    type: Sequelize.STRING
-  },
-  lastName: {
-    type: Sequelize.STRING
-  }
-});
-
-// force: true will drop the table if it already exists
-User.sync({ force: true }).then(() => {
-  // Table created
-  return User.create({
-    firstName: 'John',
-    lastName: 'Hancock'
-  });
-});
+var sequelize = require('./sequelize');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
