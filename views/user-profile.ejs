@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ./header %>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <% include ./navigation-logged-in %>
+
+    <div class="center-section offset-navbar">
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <h1 id="user-label"><span class="fa fa-user mr-3"></span>soniaxu96</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="offset-md-2 col-md-8">
+          <ul class="question-banks-container">
+            <li class="question-bank-card">
+              <div class="question-bank-label">
+                <span class="fa fa-question-circle-o fa-4x"></span>
+                <h1>Technical Questions</h1>
+                <div>
+                  <div class="btn btn-2 mt-0">Add</div>
+                </div>
+              </div>
+              <ul class="list-group question-bank-questions">
+                <li class="list-group-item">Tell me about yourself.</li>
+                <li class="list-group-item list-group-item-info">What is the importance of closures?</li>
+                <li class="list-group-item">What are some of the new features included in ES6?</li>
+                <li class="list-group-item list-group-item-info">What are the 4 principles of object-oriented programming?</li>
+
+              </ul>
+            </li>
+            <li class="question-bank-card">
+              <div class="question-bank-label">
+                <span class="fa fa-question-circle-o fa-4x"></span>
+                <h1>Basic Team Questions</h1>
+                <div>
+                  <div class="btn btn-2 mt-0">Add</div>
+                </div>
+              </div>
+              <ul class="list-group question-bank-questions">
+                <li class="list-group-item">How well do you work in a team?</li>
+                <li class="list-group-item list-group-item-info">What would you do if a team member confronts you?</li>
+                <li class="list-group-item">In a team scenario, are you more of a leader or a follower?</li>
+
+              </ul>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+  <footer>
+
+    <% include ./footer %>
+    <script src="javascripts/index.js"></script>
+  </footer>
+</html>

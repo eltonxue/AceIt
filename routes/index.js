@@ -28,6 +28,14 @@ router.get('/practice', function(req, res, next) {
   res.render('practice');
 });
 
+router.get('/user', function(req, res, next) {
+  res.render('user-profile');
+});
+
+router.get('/search-results', function(req, res, next) {
+  res.render('search-results');
+});
+
 router.get('/my-account', function(req, res, next) {
   res.render('my-account');
 });

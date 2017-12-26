@@ -357,6 +357,35 @@ ul {
   cursor: pointer;
 }
 
+/* User Profile */
+#user-label {
+  text-align: center;
+}
+
+/* Search Results */
+#search-results {
+}
+
+.username-card {
+  padding: 20px;
+  margin: 20px 15px;
+  font-size: 10px;
+  display: inline-block;
+  width: 300px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: $modern-dark;
+  transition-property: box-shadow;
+  transition-duration: .1s;
+  transition-timing-function: linear;
+}
+
+.username-card:hover {
+  box-shadow: 0px 0px 25px white;
+  background-color: $primary-dark;
+  cursor: pointer;
+}
+
 /* Media Queries & Webkit */
 @media only screen and (max-width: 1700px) {
   .pl-30 {
