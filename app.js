@@ -12,9 +12,6 @@ var auth = require('./routes/auth');
 
 var app = express();
 
-// setup sequelize database
-var sequelize = require('./sequelize');
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
