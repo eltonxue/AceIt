@@ -6,7 +6,7 @@ $('#register').submit(function(e) {
     errors[i].remove();
   }
 
-  checkValidInputs();
+  checkEmptyInputs();
 
   // Registration
   if ($('.error').length === 0) {
@@ -14,9 +14,11 @@ $('#register').submit(function(e) {
       .post('/auth/register', {
         username: $('#username').val(),
         email: $('#email').val(),
-        password: $('#password').val()
+        password: $('#password').val(),
+        confirmPassword: $('#confirm-password').val()
       })
       .then(function(response) {
+        console.log(response);
         const { data } = response;
         if (!data.error) {
           axios
@@ -33,8 +35,10 @@ $('#register').submit(function(e) {
           errorMessage.text(data.error);
           if (data.type === 'username') {
             $('#username').after(errorMessage);
-          } else {
+          } else if (data.type === 'email') {
             $('#email').after(errorMessage);
+          } else if (data.type === 'password') {
+            $('#confirm-password').after(errorMessage);
           }
         }
       })
@@ -44,7 +48,7 @@ $('#register').submit(function(e) {
   }
 });
 
-const checkValidInputs = () => {
+const checkEmptyInputs = () => {
   // Check if empty inputs
   const inputIDs = ['password', 'email', 'username'];
 
@@ -57,18 +61,4 @@ const checkValidInputs = () => {
       input.after(errorMessage);
     }
   });
-  // Check if passwords > 5 are a match
-  const password = $('#password').val();
-  const confirmPassword = $('#confirm-password').val();
-  if (password !== confirmPassword) {
-    errorMessage.text('Passwords do not match');
-    $('#confirm-password').after(errorMessage);
-  }
-
-  if (password <= 6 || confirmPassword.length <= 6) {
-    errorMessage.text('Passwords must be greater than 6 characters');
-    $('#confirm-password').after(errorMessage);
-  }
-
-  // Check if password is greater than >
 };
