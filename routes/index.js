@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
+var auth = require('../utils/session');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { loggedIn: true });
+  res.render('index', { user: req.session.user });
 });
 
 // Gets registration page
@@ -15,6 +17,9 @@ router.get('/register', function(req, res, next) {
 router.get('/login', function(req, res, next) {
   res.render('login');
 });
+
+// Process requireLogin middleware here
+router.use(auth.requireLogin);
 
 router.get('/question-banks', function(req, res, next) {
   res.render('question-banks');

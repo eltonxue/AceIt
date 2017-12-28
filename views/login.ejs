@@ -2,7 +2,6 @@
 <html>
   <head>
     <% include ./header %>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <% include ./navigation-logged-out %>
@@ -12,18 +11,18 @@
         <h1>Login</h1>
       </div>
       <div class="col-md-6 no-gutters flex-center">
-        <form class="authentication-box" id="register">
+        <form class="authentication-box" id="login">
           <div class="form-group">
             <span class="fa fa-user-circle-o mr-2"></span>
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username-input">
+            <input type="text" class="form-control" id="username">
           </div>
           <div class="form-group">
             <span class="fa fa-lock mr-2"></span>
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password-input">
+            <input type="password" class="form-control" id="password">
           </div>
-          <button class="btn btn-1 float-right" type="submit">Login</button>
+          <button class="btn btn-1 float-right" type="submit" id="login-button">Login</button>
         </form>
       </div>
     </div>
@@ -32,6 +31,6 @@
   <footer>
 
     <% include ./footer %>
-    <script src="javascripts/index.js"></script>
+    <script src="javascripts/login.js"></script>
   </footer>
 </html>

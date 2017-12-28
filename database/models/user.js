@@ -32,5 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   );
+  // Sync model for view in DataGrip
+  User.sync({ force: false }).then(() => console.log('Model synced'));
   return User;
 };

@@ -214,6 +214,9 @@ ul {
 .authentication-box * input {
   font-size: 22px; }
 
+.error {
+  color: #d43326; }
+
 /* Question Banks Page */
 .fa-plus-square {
   color: white;

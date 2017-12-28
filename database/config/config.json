@@ -2,7 +2,7 @@
   "development": {
     "username": "eltonxue",
     "password": null,
-    "database": "aceit-dev",
+    "database": "aceit-devs",
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
@@ -10,7 +10,7 @@
   "test": {
     "username": "eltonxue",
     "password": null,
-    "database": "aceit-dev",
+    "database": "aceit-devs",
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
@@ -18,7 +18,7 @@
   "production": {
     "username": "eltonxue",
     "password": null,
-    "database": "aceit-dev",
+    "database": "aceit-devs",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
