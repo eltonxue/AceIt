@@ -16,12 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       history: {
-        type: DataTypes.ARRAY(DataTypes.JSON),
+        type: DataTypes.ARRAY(DataTypes.JSON), // [ Feedback ]
         defaultValue: []
       },
       questionBanks: {
-        type: DataTypes.ARRAY(DataTypes.ARRAY(DataTypes.STRING)),
-        defaultValue: []
+        type: DataTypes.JSON, // { title: String, questions: [ String ] }
+        defaultValue: {}
       }
     },
     {
@@ -32,7 +32,5 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   );
-  // Sync model for view in DataGrip
-  User.sync({ force: false }).then(() => console.log('Model synced'));
   return User;
 };

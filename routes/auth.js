@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-// const UsersController = require('../controllers/index').users;
 const User = require('../database/models/index').User;
 
 // Logs the user in as a session user

@@ -18,38 +18,20 @@
       </div>
       <div class="row">
         <div class="offset-md-2 col-md-8">
-          <ul class="question-banks-container">
+          <ul class="question-banks-container" id="main-container">
             <li class="question-bank-card">
               <div class="question-bank-label">
                 <span class="fa fa-question-circle-o fa-4x"></span>
-                <h1>Technical Questions</h1>
-                <div>
-                  <div class="btn btn-1 edit-question-bank">Edit</div>
-                  <div class="btn btn-3 remove-question-bank">Remove</div>
-                </div>
+                <h1 class="title">Technical Questions</h1>
+                <div class="btn btn-3 remove-question-bank">Remove</div>
               </div>
               <ul class="list-group question-bank-questions">
-                <li class="list-group-item">Tell me about yourself.</li>
-                <li class="list-group-item list-group-item-info">What is the importance of closures?</li>
-                <li class="list-group-item">What are some of the new features included in ES6?</li>
-                <li class="list-group-item list-group-item-info">What are the 4 principles of object-oriented programming?</li>
-                <div class="btn btn-2 add-question-to-bank">Add Question</div>
-              </ul>
-            </li>
-            <li class="question-bank-card">
-              <div class="question-bank-label">
-                <span class="fa fa-question-circle-o fa-4x"></span>
-                <h1>Basic Team Questions</h1>
-                <div>
-                  <div class="btn btn-1 edit-question-bank">Edit</div>
-                  <div class="btn btn-3 remove-question-bank">Remove</div>
-                </div>
-              </div>
-              <ul class="list-group question-bank-questions">
-                <li class="list-group-item">How well do you work in a team?</li>
-                <li class="list-group-item list-group-item-info">What would you do if a team member confronts you?</li>
-                <li class="list-group-item">In a team scenario, are you more of a leader or a follower?</li>
-                <div class="btn btn-2 add-question-to-bank">Add Question</div>
+                <li class="list-group-item">Tell me about yourself.<span class="fa fa-close ml-auto"></span></li>
+                <li class="list-group-item">What is the importance of closures?<span class="fa fa-close ml-auto"></span></li>
+                <li class="list-group-item">What are some of the new features included in ES6?<span class="fa fa-close ml-auto"></span></li>
+                <li class="list-group-item">What are the 4 principles of object-oriented programming?<span class="fa fa-close ml-auto"></span></li>
+                <input class="list-group-item list-group-item-info mt-2" onKeyPress="onAdd(event, this)"></input>
+                <div class="btn btn-2 mt-2 add-question">Add Question</div>
               </ul>
             </li>
           </ul>
@@ -62,6 +44,6 @@
   <footer>
 
     <% include ./footer %>
-    <script src="javascripts/index.js"></script>
+    <script src="javascripts/question-banks.js"></script>
   </footer>
 </html>

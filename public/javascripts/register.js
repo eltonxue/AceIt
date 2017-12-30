@@ -12,8 +12,8 @@ $('#register').submit(function(e) {
   if ($('.error').length === 0) {
     axios
       .post('/auth/register', {
-        username: $('#username').val(),
-        email: $('#email').val(),
+        username: $('#username').val().trim(),
+        email: $('#email').val().trim(),
         password: $('#password').val(),
         confirmPassword: $('#confirm-password').val()
       })

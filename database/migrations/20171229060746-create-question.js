@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('Questions', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,22 +12,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      password: {
+      question: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      history: {
-        defaultValue: [],
-        type: Sequelize.ARRAY(Sequelize.JSON)
-      },
-      questionBanks: {
-        defaultValue: {},
-        type: Sequelize.JSON
-      },
+      }
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -39,6 +27,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('Questions');
   }
 };

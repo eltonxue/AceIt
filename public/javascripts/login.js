@@ -6,8 +6,8 @@ $('#login').submit(function(e) {
   }
   axios
     .post('/auth/login', {
-      username: $('#username').val(),
-      password: $('#password').val()
+      username: $('#username').val().trim(),
+      password: $('#password').val().trim()
     })
     .then(function(response) {
       const { data } = response;

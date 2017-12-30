@@ -18,6 +18,13 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
+router.get('/profile/:username', function(req, res, next) {
+  // Gather user's info
+  let questionBanks;
+  // Redirect to user's page
+  res.render('user-profile', { questionBanks });
+});
+
 // Process requireLogin middleware here
 router.use(auth.requireLogin);
 
