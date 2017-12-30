@@ -73,9 +73,12 @@ questionBanks.on('click', 'h1', function(event) {
   title.val($(this).text());
   let card = $(this).parent().parent();
   card.click(function() {
-    let newTitle = $('<h1>', { class: 'title' });
-    newTitle.text(title.val());
-    title.replaceWith(newTitle);
+    let value = title.val().trim();
+    if (value) {
+      let newTitle = $('<h1>', { class: 'title' });
+      newTitle.text(value);
+      title.replaceWith(newTitle);
+    }
   });
   title.click(function(event) {
     event.stopPropagation();

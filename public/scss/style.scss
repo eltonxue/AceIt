@@ -282,6 +282,10 @@ input {
   color: $primary-red;
 }
 
+.success {
+  color: $primary-green;
+}
+
 /* Question Banks Page */
 .fa-plus-square {
   color: white;
@@ -338,6 +342,16 @@ input {
 .question-bank-questions > li {
   font-size: 25px;
   color: $secondary-dark;
+}
+
+.list-group-item {
+  transition-property: background-color;
+  transition-duration: .1s;
+  transition-timing-function: linear;
+}
+
+.list-group-item:hover {
+  background-color: #ebf9fe;
 }
 
 .question-bank-questions > input {

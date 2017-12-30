@@ -224,6 +224,9 @@ input {
 .error {
   color: #d43326; }
 
+.success {
+  color: #66bb75; }
+
 /* Question Banks Page */
 .fa-plus-square {
   color: white;
@@ -271,6 +274,14 @@ input {
 .question-bank-questions > li {
   font-size: 25px;
   color: #282e37; }
+
+.list-group-item {
+  transition-property: background-color;
+  transition-duration: .1s;
+  transition-timing-function: linear; }
+
+.list-group-item:hover {
+  background-color: #ebf9fe; }
 
 .question-bank-questions > input {
   font-size: 25px;
