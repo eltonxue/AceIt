@@ -1,7 +1,7 @@
 const addBank = $('#add-bank');
 const questionBanks = $('#main-container');
 
-const createQuestionBank = () => {
+const createQuestionBank = bankId => {
   let card = $('<li>', { class: 'question-bank-card' });
 
   // Create label container
@@ -33,6 +33,8 @@ const createQuestionBank = () => {
   card.append(label);
   card.append(questions);
 
+  card.attr('data-id', bankId);
+
   questionBanks.append(card);
 };
 
@@ -59,12 +61,26 @@ const onAdd = (event, scope) => {
 
 // Add new question bank
 addBank.click(() => {
-  createQuestionBank();
+  axios
+    .post('/action/bank', {})
+    .then(response => {
+      console.log(response);
+      createQuestionBank(response.data.id);
+    })
+    .catch(err => console.log(err));
 });
 
 // Remove question bank
 questionBanks.on('click', '.remove-question-bank', function(event) {
-  $(this).parent().parent().remove();
+  let card = $(this).parent().parent();
+  let bankId = card.data('id');
+  axios
+    .delete('/action/bank', { params: { bankId } })
+    .then(response => {
+      console.log(response);
+      card.remove();
+    })
+    .catch(err => console.log(err));
 });
 
 // Edits title

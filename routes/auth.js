@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-const User = require('../database/models/index').User;
+const models = require('../database/models/index');
+
+const User = models.User;
+const QuestionBank = models.QuestionBank;
+const Feedback = models.Feedback;
 
 // Logs the user in as a session user
 router.post('/login', function(req, res, next) {
@@ -59,11 +63,25 @@ router.post('/register', function(req, res, next) {
                 const userData = {
                   username: data.username,
                   password: data.password,
-                  email: data.email
+                  email: data.email,
+                  QuestionBanks: {
+                    title: 'Example Question Bank',
+                    questions: [
+                      'Tell me about yourself.',
+                      'Why do you want to work for us?',
+                      'Do you have any questions?'
+                    ]
+                  },
+                  Feedbacks: {}
                 };
 
                 // Create a user given the data (history and questionBanks values created by default)
-                return User.create(userData)
+                return User.create(userData, {
+                  include: [
+                    { model: QuestionBank, as: 'QuestionBanks' },
+                    { model: Feedback, as: 'Feedbacks' }
+                  ]
+                })
                   .then(user => res.send(user))
                   .catch(err => res.send(err));
               }

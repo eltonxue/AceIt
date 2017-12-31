@@ -1,5 +1,6 @@
 $('#update-account').submit(function(e) {
   e.preventDefault();
+  // Remove error and success messages
   let errors = $('.error');
   let successes = $('.success');
   for (let i = 0; i < errors.length; ++i) {
@@ -16,7 +17,7 @@ $('#update-account').submit(function(e) {
     const newPassword = $('#new-password').val();
     const confirmNewPassword = $('#confirm-new-password').val();
     axios
-      .patch('/users/password', {
+      .patch('/action/update-password', {
         oldPassword,
         newPassword,
         confirmNewPassword

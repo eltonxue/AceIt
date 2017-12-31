@@ -289,15 +289,17 @@ input {
 /* Question Banks Page */
 .fa-plus-square {
   color: white;
-  transition-property: color;
+  transition-property: box-shadow;
   transition-duration: .1s;
   transition-timing-function: linear;
   margin: 5px;
+  background-color: transparent;
 }
 
 .fa-plus-square:hover {
   cursor: pointer;
-  color: $primary-blue;
+  color: #d8dde8;
+  box-shadow: 0px 0px 25px $primary-dark;
 }
 
 .fa-close {
