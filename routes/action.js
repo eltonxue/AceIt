@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var sequelize = require('sequelize');
 
 const User = require('../database/models/index').User;
 const QuestionBank = require('../database/models/index').QuestionBank;
@@ -43,8 +44,6 @@ router.post('/feedback', function(req, res, next) {
 // Add new Question Bank
 router.post('/bank', function(req, res, next) {
   const data = req.body;
-  console.log(req.session.user);
-  console.log(req.session.user.id);
   return QuestionBank.create({
     UserId: req.session.user.id,
     title: 'New Bank',
@@ -58,24 +57,59 @@ router.post('/bank', function(req, res, next) {
 router.delete('/bank', function(req, res, next) {
   const bankId = parseInt(req.query.bankId);
 
-  QuestionBank.destroy({ where: { id: bankId } }).then(() =>
-    res.send('Delete Successful')
-  );
+  return QuestionBank.destroy({ where: { id: bankId } })
+    .then(() => res.send('Delete Successful'))
+    .catch(err => res.send(err));
 });
 
 // Update question bank title w/ bank id
 router.patch('/bank/update-title', function(req, res, next) {
   const data = req.body;
+  const { bankId, newTitle } = data;
+  return QuestionBank.update(
+    { title: newTitle },
+    { where: { id: bankId }, returning: true, plain: true }
+  )
+    .then(results => res.send(results[1].dataValues))
+    .catch(err => res.send(err));
 });
 
 // Add question to question bank w/ bank id
 router.patch('/bank/add-question', function(req, res, next) {
   const data = req.body;
+  const { bankId, question } = data;
+
+  return QuestionBank.update(
+    {
+      questions: sequelize.fn(
+        'array_append',
+        sequelize.col('questions'),
+        question
+      )
+    },
+    { where: { id: bankId }, returning: true, plain: true }
+  )
+    .then(results => res.send(results[1].dataValues))
+    .catch(err => res.send(err));
 });
 
 // Remove question from question bank w/ bank id
-router.patch('/bank/add-question', function(req, res, next) {
+router.patch('/bank/remove-question', function(req, res, next) {
   const data = req.body;
+  const { bankId, question } = data;
+
+  return QuestionBank.findById(bankId)
+    .then(bank => {
+      let questions = bank.questions;
+      questions.splice(questions.indexOf(question), 1);
+      QuestionBank.update(
+        { questions },
+        { where: { id: bankId }, returning: true, plain: true }
+      )
+        .then(results => res.send(results[1].dataValues))
+        .catch(err => res.send(err));
+    })
+    .catch(err => res.send(err));
 });
 
 module.exports = router;

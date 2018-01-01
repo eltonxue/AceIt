@@ -35,7 +35,7 @@ const createQuestionBank = bankId => {
 
   card.attr('data-id', bankId);
 
-  questionBanks.append(card);
+  questionBanks.prepend(card);
 };
 
 const createQuestion = scope => {
@@ -49,6 +49,13 @@ const createQuestion = scope => {
     question.append(remove);
     question.insertBefore(questionInput);
     questionInput.val('');
+
+    const bankId = scope.parent().parent().data('id');
+
+    axios
+      .patch('/action/bank/add-question', { bankId, question: text })
+      .then(response => console.log(response))
+      .catch(err => console.log(err));
   }
 };
 
@@ -87,17 +94,33 @@ questionBanks.on('click', '.remove-question-bank', function(event) {
 questionBanks.on('click', 'h1', function(event) {
   let title = $('<input>', { class: 'title' });
   title.val($(this).text());
+
+  title.click(function(event) {
+    event.stopPropagation();
+  });
+
   let card = $(this).parent().parent();
   card.click(function() {
     let value = title.val().trim();
     if (value) {
+      console.log(value);
+      console.log(title);
       let newTitle = $('<h1>', { class: 'title' });
       newTitle.text(value);
       title.replaceWith(newTitle);
+
+      // Prevent multiple patch calls
+      card.off('click');
+
+      const bankId = card.data('id');
+      axios
+        .patch('/action/bank/update-title', {
+          bankId,
+          newTitle: value
+        })
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
     }
-  });
-  title.click(function(event) {
-    event.stopPropagation();
   });
 
   $(this).replaceWith(title);
@@ -105,7 +128,17 @@ questionBanks.on('click', 'h1', function(event) {
 
 // Remove question
 questionBanks.on('click', '.fa-close', function(event) {
-  $(this).parent().remove();
+  let questionElement = $(this).parent();
+  const question = questionElement.text();
+  const bankId = questionElement.parent().parent().data('id');
+
+  axios
+    .patch('/action/bank/remove-question', { bankId, question })
+    .then(response => {
+      console.log(response);
+      questionElement.remove();
+    })
+    .catch(err => console.log(err));
 });
 
 // Add question
