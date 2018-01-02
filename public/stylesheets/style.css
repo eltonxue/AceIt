@@ -227,7 +227,20 @@ input {
 .success {
   color: #66bb75; }
 
+.last-updated {
+  color: #ebf9fe;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic; }
+
 /* Question Banks Page */
+#search-banks {
+  width: 40%;
+  border-radius: 5px;
+  font-size: 25px;
+  padding: 5px; }
+
 .fa-plus-square {
   color: white;
   transition-property: box-shadow;

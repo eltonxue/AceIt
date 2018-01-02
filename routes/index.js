@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
 var auth = require('../utils/session');
+
+const models = require('../database/models/index');
+
+const QuestionBank = models.QuestionBank;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -29,7 +32,9 @@ router.get('/profile/:username', function(req, res, next) {
 router.use(auth.requireLogin);
 
 router.get('/question-banks', function(req, res, next) {
-  res.render('question-banks');
+  QuestionBank.findAll({ where: { UserId: req.session.user.id } })
+    .then(banks => res.render('question-banks', { banks }))
+    .catch(err => res.send(err));
 });
 
 router.get('/history', function(req, res, next) {

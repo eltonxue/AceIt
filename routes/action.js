@@ -2,8 +2,10 @@ var express = require('express');
 var router = express.Router();
 var sequelize = require('sequelize');
 
-const User = require('../database/models/index').User;
-const QuestionBank = require('../database/models/index').QuestionBank;
+const models = require('../database/models/index');
+
+const User = models.User;
+const QuestionBank = models.QuestionBank;
 
 // Update password
 router.patch('/update-password', function(req, res, next) {

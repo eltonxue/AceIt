@@ -1,4 +1,5 @@
 $primary-blue: #0bb4e0;
+$secondary-blue: #ebf9fe;
 $primary-green: #66bb75;
 $primary-red: #d43326;
 $primary-purple: #9b90d9;
@@ -286,7 +287,22 @@ input {
   color: $primary-green;
 }
 
+.last-updated {
+  color: $secondary-blue;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+}
+
 /* Question Banks Page */
+#search-banks {
+  width: 40%;
+  border-radius: 5px;
+  font-size: 25px;
+  padding: 5px;
+}
+
 .fa-plus-square {
   color: white;
   transition-property: box-shadow;
@@ -353,7 +369,7 @@ input {
 }
 
 .list-group-item:hover {
-  background-color: #ebf9fe;
+  background-color: $secondary-blue;
 }
 
 .question-bank-questions > input {
