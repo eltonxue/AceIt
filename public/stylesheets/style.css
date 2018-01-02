@@ -239,7 +239,7 @@ input {
   width: 40%;
   border-radius: 5px;
   font-size: 25px;
-  padding: 5px; }
+  padding: 5px 15px; }
 
 .fa-plus-square {
   color: white;

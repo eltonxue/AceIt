@@ -48,8 +48,8 @@ router.post('/bank', function(req, res, next) {
   const data = req.body;
   return QuestionBank.create({
     UserId: req.session.user.id,
-    title: 'New Bank',
-    questions: []
+    title: data.title,
+    questions: data.questions
   })
     .then(bank => res.send(bank))
     .catch(err => res.send(err));

@@ -158,7 +158,7 @@ const createQuestion = scope => {
 // Add new question bank
 addBank.click(() => {
   axios
-    .post('/action/bank', {})
+    .post('/action/bank', { title: 'New Bank', questions: [] })
     .then(response => {
       console.log(response);
       const bank = response.data;

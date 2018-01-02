@@ -27,9 +27,21 @@ router.get('/login', function(req, res, next) {
 
 router.get('/username=:username', function(req, res, next) {
   // Gather user's info
-  let questionBanks;
+  const { username } = req.params;
+
+  return User.findOne({ where: { username } })
+    .then(user => {
+      QuestionBank.findAll({ where: { UserId: user.id } })
+        .then(banks =>
+          res.render('user-profile', {
+            username: user.username,
+            banks
+          })
+        )
+        .catch(err => res.send(err));
+    })
+    .catch(err => res.send(err));
   // Redirect to user's page
-  res.render('user-profile', { questionBanks });
 });
 
 // Process requireLogin middleware here
