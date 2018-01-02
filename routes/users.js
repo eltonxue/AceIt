@@ -39,7 +39,9 @@ router.get('/banks/search=:input', function(req, res, next) {
 
   QuestionBank.findAll({
     where: { UserId: req.session.user.id, title: { [Op.iLike]: `%${input}%` } }
-  }).then(banks => res.send(banks));
+  })
+    .then(banks => res.send(banks))
+    .catch(err => res.send(err));
 });
 
 // Get users with search input
