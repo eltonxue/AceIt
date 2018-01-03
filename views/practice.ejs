@@ -10,13 +10,25 @@
 
     <div class="center-section offset-navbar" id="main-container">
       <div class="row mt-4">
-        <div class="offset-md-2 col-md-6">
-          <h1>Choose a Question Bank</h1>
+        <div class="offset-md-2 col-md-8 flex-center">
+          <h1 id="content-title">Choose a Question Bank <span class="fa fa-battery-1"></span></h1>
         </div>
       </div>
-      <div class="row">
+      <div class="row" id="choose-bank-container">
         <div class="offset-md-2 col-md-8">
           <ul class="question-banks-container">
+            <% for (let i = 0; i < banks.length; ++i) { %>
+              <li class="choose-card question-bank-card" data-id="<%= banks[i].id %>">
+                <div class="question-bank-label">
+                  <h1><%= banks[i].title %></h1>
+                </div>
+                <ul class="list-group question-bank-questions">
+                  <% for (let j = 0; j < banks[i].questions.length; ++j) { %>
+                    <li class="list-group-item"><%= banks[i].questions[j] %></li>
+                  <% } %>
+                </ul>
+              </li>
+            <% } %>
             <li class="choose-card question-bank-card">
               <div class="question-bank-label">
                 <h1>Technical Questions</h1>
@@ -28,32 +40,25 @@
                 <li class="list-group-item list-group-item-info">What are the 4 principles of object-oriented programming?</li>
               </ul>
             </li>
-            <li class="choose-card question-bank-card">
-              <div class="question-bank-label">
-                <h1>Basic Team Questions</h1>
-              </div>
-              <ul class="list-group question-bank-questions">
-                <li class="list-group-item">How well do you work in a team?</li>
-                <li class="list-group-item list-group-item-info">What would you do if a team member confronts you?</li>
-                <li class="list-group-item">In a team scenario, are you more of a leader or a follower?</li>
-              </ul>
-            </li>
+
           </ul>
 
         </div>
       </div>
 
-      <div class="row flex-center" id="record-response">
+      <!-- <div class="row flex-center" id="record-response-container">
         <div class="col-md-12" id="timer">
           00:00
         </div>
 
-        <div class="col-md-12" id="question">
+        <h1 class="col-md-12 flex-center" id="question">
+          <textarea id="recorded-text" disabled>Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+          </textarea>
           <h1>How well do you work in a team?</h1>
-        </div>
+        </h1>
         <div class="col-md-12" id="control-buttons">
-          <div class="btn btn-2 mt-0" id="start">START</div>
-          <div class="btn btn-3" id="stop">STOP</div>
+          <div class="btn mt-2" id="start"><span class="fa fa-play-circle fa-3x"></span></div>
+          <div class="btn mt-2" id="stop"><span class="fa fa-stop-circle fa-3x"></div>
         </div>
       </div>
     </div>
@@ -62,13 +67,13 @@
         <div class="feedback-card">
           <h1>"How well do you work in a team?"</h1>
           <canvas id="feedback-chart" width="800" height="400"></canvas>
-      
+
         </div>
         <div class="col-md-12 flex-center">
-          <span class="fa fa-arrow-circle-right fa-5x"></span>
+          <span class="fa fa-arrow-circle-right fa-5x" id="next"></span>
         </div>
 
-    </div>
+    </div> -->
 
   </body>
   <footer>

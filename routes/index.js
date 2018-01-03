@@ -58,7 +58,9 @@ router.get('/history', function(req, res, next) {
 });
 
 router.get('/practice', function(req, res, next) {
-  res.render('practice');
+  return QuestionBank.findAll({ where: { UserId: req.session.user.id } })
+    .then(banks => res.render('practice', { banks }))
+    .catch(err => res.send(err));
 });
 
 router.get('/search', function(req, res, next) {

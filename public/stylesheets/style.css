@@ -303,16 +303,41 @@ input {
   border-radius: 5px;
   padding: 10px; }
 
-/* Practice */
-#record-response {
+/* Practice Page */
+#record-response-container {
   margin-top: 60px; }
 
-#record-response > div {
+#record-response-container > div {
   text-align: center;
   margin: 10px; }
 
+#recorded-text {
+  border: 1px solid grey;
+  padding: 10px 15px;
+  line-height: 30px;
+  font-size: 25px;
+  color: white;
+  height: 250px;
+  width: 900px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #1f1f1f; }
+
 #timer {
-  font-size: 200px; }
+  font-size: 200px;
+  margin-bottom: 0px !important; }
+
+#question {
+  text-align: center; }
+
+#control-buttons > div {
+  border-radius: 50%; }
+
+#start {
+  background-color: #66bb75; }
+
+#stop {
+  background-color: #d43326; }
 
 .feedback-card {
   background-color: #1f1f1f;

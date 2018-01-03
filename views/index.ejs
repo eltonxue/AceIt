@@ -2,7 +2,6 @@
 <html>
   <head>
     <% include ./header %>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <% if (user) { %>
@@ -17,7 +16,7 @@
           <h1 class="display-3">Ace Your Interview</h1>
           <p class="lead">Land your dream job.</p>
           <p class="lead">
-            <a class="btn btn-1 btn-lg" href="#" role="button">Learn more</a>
+            <a class="btn btn-1 btn-lg" id="learn-more">Learn more</a>
           </p>
         </div>
       </div>
@@ -58,7 +57,7 @@
 
   </body>
   <footer>
-
+    <h4 class="col-sm-12 copyright">© Copyright 2017 AceIt</h4>
     <% include ./footer %>
     <script src="javascripts/index.js"></script>
   </footer>

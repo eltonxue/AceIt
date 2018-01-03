@@ -25,6 +25,16 @@ router.get('/history', function(req, res, next) {
 });
 
 // Get session user's question banks
+router.get('/bank=:bankId', function(req, res, next) {
+  const { bankId } = req.params;
+  return QuestionBank.findOne({
+    where: { id: bankId }
+  })
+    .then(bank => res.send(bank))
+    .catch(err => res.send(err));
+});
+
+// Get session user's question banks
 router.get('/banks', function(req, res, next) {
   return QuestionBank.findAll({ where: { UserId: req.session.user.id } })
     .then(banks => res.send(banks))
