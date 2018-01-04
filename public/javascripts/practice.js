@@ -35,6 +35,19 @@ const createFeedback = (questionText, recordedText) => {
   mainContainer.append(feedbackContainer);
 
   // Calculate API
+  console.log(recordedText);
+  axios
+    .post('/api/tone-analyzer', {
+      username: '8be17060-7d16-4dde-b8db-2f789916806c',
+      password: 'pxQuQ0lbWszM',
+      text: recordedText
+    })
+    .then(function(response) {
+      console.log(response);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
 
   // Build chart
   Chart.defaults.global.defaultFontColor = 'white';
@@ -145,7 +158,7 @@ let timer = $('#timer');
 let recordInterval = null;
 
 const startTimer = recognition => {
-  let count = 5;
+  let count = 60;
 
   recordInterval = setInterval(function() {
     count -= 1;
@@ -155,18 +168,19 @@ const startTimer = recognition => {
     }
     $('#timer').text(`00:${seconds}`);
     console.log(count);
-    if (count === 0) {
+    if (count === -1) {
       clearInterval(recordInterval);
       let questionText = Questions[index];
-      $('#record-response-container').remove();
 
-      let recordedText = $('#recorded-text').text();
+      let recordedText = $('#recorded-text').val();
 
       recognition.stop();
 
-      // Record recognition
-
       createFeedback(questionText, recordedText);
+
+      $('#record-response-container').remove();
+
+      // Record recognition
     }
   }, 1000);
 };
@@ -222,15 +236,16 @@ try {
   mainContainer.on('click', '#stop', function(e) {
     clearInterval(recordInterval);
     let questionText = Questions[index];
-    $('#record-response-container').remove();
 
-    let recordedText = $('#recorded-text').text();
+    let recordedText = $('#recorded-text').val();
 
     recognition.stop();
 
     // Record recognition
 
     createFeedback(questionText, recordedText);
+
+    $('#record-response-container').remove();
   });
 
   // Next Question
@@ -254,11 +269,16 @@ try {
     console.log('ON RESULT OCCURED');
     let recordedText = $('#recorded-text');
     for (let i = event.resultIndex; i < event.results.length; ++i) {
-      let old = recordedText.text();
-      let newText = `${old}${event.results[i][0].transcript}.`;
-      recordedText.text(newText);
-      console.log(recordedText);
-      console.log(newText);
+      let old = recordedText.val();
+      console.log(event.results[i][0].transcript);
+      let text = event.results[i][0].transcript.trim();
+      text = text.charAt(0).toUpperCase() + text.slice(1);
+      console.log(text);
+      let newText = `${old} ${text}.`;
+      // newText = newText.split(' ').join('.');
+      recordedText.val(newText);
+      // console.log(recordedText);
+      // console.log(newText);
     }
   };
 } catch (e) {

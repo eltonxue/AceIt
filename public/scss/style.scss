@@ -379,9 +379,6 @@ input {
 }
 
 /* Practice Page */
-#record-response-container {
-  margin-top: 60px;
-}
 #record-response-container > div {
   text-align: center;
   margin: 10px;
@@ -393,7 +390,9 @@ input {
   line-height: 30px;
   font-size: 25px;
   color: white;
-  height: 250px;
+  height: 200px;
+  min-height: 100px;
+  max-height: 300px;
   width: 900px;
   margin-bottom: 20px;
   border-radius: 10px;
@@ -402,7 +401,7 @@ input {
 
 #timer {
   font-size: 200px;
-  margin-bottom: 0px !important;
+  margin: 0px !important;
 }
 
 #question {
