@@ -1,6 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Feedback = sequelize.define('Feedback', {
+    path: {
+      type: DataTypes.STRING,
+      default: '/'
+    },
     question: {
       type: DataTypes.STRING,
       defaultValue: 'Example Feedback'

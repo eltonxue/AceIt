@@ -1,7 +1,7 @@
 const mainContainer = $('#main-container');
 const chooseBankContainer = $('#choose-bank-container');
 
-const createFeedback = (questionText, recordedText) => {
+const createFeedback = (questionText, recordedText, article) => {
   // Create feedback
   let feedbackContainer = $('<div>', {
     class: 'row flex-center',
@@ -19,6 +19,7 @@ const createFeedback = (questionText, recordedText) => {
 
   card.append(question);
   card.append(chart);
+  card.append(article);
 
   let nextContainer = $('<div>', { class: 'col-md-12 flex-center' });
   let next = $('<span>', {
@@ -146,6 +147,8 @@ const createTimer = question => {
 
   chooseBankContainer.remove();
   mainContainer.append(recordResponseContainer);
+
+  responsiveVoice.speak(question);
 };
 
 // Global questions
@@ -157,7 +160,7 @@ let timer = $('#timer');
 
 let recordInterval = null;
 
-const startTimer = recognition => {
+const startTimer = mediaRecorder => {
   let count = 60;
 
   recordInterval = setInterval(function() {
@@ -174,7 +177,7 @@ const startTimer = recognition => {
 
       let recordedText = $('#recorded-text').val();
 
-      recognition.stop();
+      mediaRecorder.stop();
 
       createFeedback(questionText, recordedText);
 
@@ -185,104 +188,137 @@ const startTimer = recognition => {
   }, 1000);
 };
 
-try {
-  let SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-  let recognition = new SpeechRecognition();
+// Chooses a question bank ( on click )
+$('.question-bank-card').click(function(e) {
+  const bankId = $(this).data('id');
 
-  recognition.continuous = true;
+  axios
+    .get(`/users/bank=${bankId}`)
+    .then(response => {
+      console.log(response);
+      // Shuffle bank's questions
+      Questions = response.data.questions;
 
-  // Chooses a question bank ( on click )
-  $('.question-bank-card').click(function(e) {
-    const bankId = $(this).data('id');
-
-    axios
-      .get(`/users/bank=${bankId}`)
-      .then(response => {
-        console.log(response);
-        // Shuffle bank's questions
-        Questions = response.data.questions;
-
-        // Shuffles array
-        Questions.sort((prev, curr) => {
-          const positive = Math.random();
-          const negative = Math.random() * -1;
-          return positive + negative;
-        });
-        console.log(Questions);
-        $('#content-title').html(
-          "Record Your Response <span class='fa fa-battery-2'></span>"
-        );
-        index = 0;
-        createTimer(Questions[index]);
-      })
-      .catch(err => console.log(err));
-  });
-
-  // Start Timer (change to event delegation)
-  mainContainer.on('click', '#start', function(e) {
-    startTimer(recognition);
-
-    let rContainer = $('<div>', { class: 'btn mt-2', id: 'stop' });
-    let removeButton = $('<span>', {
-      class: 'fa fa-stop-circle fa-3x'
-    });
-    rContainer.append(removeButton);
-    $(this).replaceWith(rContainer);
-    recognition.start();
-  });
-
-  // Stop Timer (change to event delegation)
-  mainContainer.on('click', '#stop', function(e) {
-    clearInterval(recordInterval);
-    let questionText = Questions[index];
-
-    let recordedText = $('#recorded-text').val();
-
-    recognition.stop();
-
-    // Record recognition
-
-    createFeedback(questionText, recordedText);
-
-    $('#record-response-container').remove();
-  });
-
-  // Next Question
-  mainContainer.on('click', '#next', function(e) {
-    $('#feedback-container').remove();
-    index++;
-    if (index >= Questions.length) {
-      console.log('Went through all the questions');
-    } else {
-      console.log('next');
+      // Shuffles array
+      Questions.sort((prev, curr) => {
+        const positive = Math.random();
+        const negative = Math.random() * -1;
+        return positive + negative;
+      });
+      console.log(Questions);
+      $('#content-title').html(
+        "Record Your Response <span class='fa fa-battery-2'></span>"
+      );
+      index = 0;
       createTimer(Questions[index]);
-    }
-  });
+    })
+    .catch(err => console.log(err));
+});
 
-  // Recognition event handling
-  recognition.onstart = () => {
-    console.log('Recording...');
-  };
+// HANDLE RECORDING with getUserMedia
 
-  recognition.onresult = function(event) {
-    console.log('ON RESULT OCCURED');
-    let recordedText = $('#recorded-text');
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      let old = recordedText.val();
-      console.log(event.results[i][0].transcript);
-      let text = event.results[i][0].transcript.trim();
-      text = text.charAt(0).toUpperCase() + text.slice(1);
-      console.log(text);
-      let newText = `${old} ${text}.`;
-      // newText = newText.split(' ').join('.');
-      recordedText.val(newText);
-      // console.log(recordedText);
-      // console.log(newText);
-    }
-  };
-} catch (e) {
-  console.error(e);
-  $('.no-browser-support').show();
-  $('.app').hide();
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  console.log('getUserMedia supported.');
+  navigator.mediaDevices
+    .getUserMedia(
+      // constraints - only audio needed for this app
+      {
+        audio: true
+      }
+    )
+    .then(function(stream) {
+      // Success callback
+      let mediaRecorder = new MediaRecorder(stream);
+
+      let chunks = [];
+
+      // Checks when data is available (when you speak in the mic)
+      mediaRecorder.ondataavailable = e => {
+        chunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = e => {
+        let questionText = Questions[index];
+        let recordedText = $('#recorded-text').val();
+
+        // Create dummy feedback to get UserId + ID
+        axios
+          .post('/action/feedback', {
+            question: 'Dummy Question'
+          })
+          .then(response => {
+            console.log(response);
+
+            let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
+            chunks = [];
+            let audioURL = window.URL.createObjectURL(blob);
+
+            let clipName = `${response.data.UserId}-${response.data.id}`;
+
+            var clipContainer = document.createElement('article');
+            var audio = document.createElement('audio');
+
+            clipContainer.classList.add('clip');
+            clipContainer.classList.add('flex-center');
+            audio.setAttribute('controls', '');
+
+            clipContainer.appendChild(audio);
+
+            audio.src = audioURL;
+
+            console.log(blob);
+            console.log(audioURL);
+
+            createFeedback(questionText, recordedText, clipContainer);
+
+            $('#record-response-container').remove();
+          })
+          .catch(err => console.log(err));
+
+        // Stop media recording
+        console.log(mediaRecorder.state);
+        console.log('Recording has stopped.');
+      };
+
+      // Start Timer (change to event delegation)
+      mainContainer.on('click', '#start', function(e) {
+        startTimer(mediaRecorder);
+
+        let rContainer = $('<div>', { class: 'btn mt-2', id: 'stop' });
+        let removeButton = $('<span>', {
+          class: 'fa fa-stop-circle fa-3x'
+        });
+        rContainer.append(removeButton);
+        $(this).replaceWith(rContainer);
+
+        // Starts media recording
+        mediaRecorder.start();
+        console.log(mediaRecorder.state);
+        console.log('Recording audio...');
+      });
+
+      // Stop Timer (change to event delegation)
+      mainContainer.on('click', '#stop', function(e) {
+        clearInterval(recordInterval);
+        mediaRecorder.stop();
+      });
+    })
+    // Error callback
+    .catch(function(err) {
+      console.log('The following gUM error occured: ' + err);
+    });
+} else {
+  console.log('getUserMedia not supported on your browser!');
 }
+
+// Next Question
+mainContainer.on('click', '#next', function(e) {
+  $('#feedback-container').remove();
+  index++;
+  if (index >= Questions.length) {
+    console.log('Went through all the questions');
+  } else {
+    console.log('next');
+    createTimer(Questions[index]);
+  }
+});

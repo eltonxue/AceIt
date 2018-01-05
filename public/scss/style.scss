@@ -432,6 +432,11 @@ input {
   margin: 10px;
 }
 
+audio::-webkit-media-controls-panel {
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
 .choose-card {
   transition-property: box-shadow;
   transition-duration: .1s;

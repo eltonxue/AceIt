@@ -2,10 +2,11 @@ var express = require('express');
 var router = express.Router();
 var sequelize = require('sequelize');
 
-const models = require('../database/models/index');
+const db = require('../database/models/index');
 
-const User = models.User;
-const QuestionBank = models.QuestionBank;
+const User = db.User;
+const QuestionBank = db.QuestionBank;
+const Feedback = db.Feedback;
 
 // Update password
 router.patch('/update-password', function(req, res, next) {
@@ -40,6 +41,21 @@ router.patch('/update-password', function(req, res, next) {
 
 // Add new Feedback to history
 router.post('/feedback', function(req, res, next) {
+  const data = req.body;
+
+  db.sequelize
+    .query(
+      `INSERT INTO "Feedbacks"("question","UserId", "createdAt", "updatedAt") VALUES ('it works!!!', ${req
+        .session.user.id}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *`,
+      { type: sequelize.QueryTypes.INSERT }
+    )
+    .then(results => {
+      res.send(results[0][0]);
+    })
+    .catch(err => res.send(err));
+});
+
+router.patch('/feedback/update', function(req, res, next) {
   const data = req.body;
 });
 

@@ -4,10 +4,10 @@ var sequelize = require('sequelize');
 
 var Op = sequelize.Op;
 
-const models = require('../database/models/index');
+const db = require('../database/models/index');
 
-const User = models.User;
-const QuestionBank = models.QuestionBank;
+const User = db.User;
+const QuestionBank = db.QuestionBank;
 
 // Get session user
 router.get('/', function(req, res, next) {

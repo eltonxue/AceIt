@@ -61,10 +61,10 @@ app.use(function(req, res, next) {
   }
 });
 
+app.use('/auth', auth);
 app.use('/', index);
 app.use('/users', users);
 app.use('/api', api);
-app.use('/auth', auth);
 app.use('/global', globe);
 app.use('/action', action);
 

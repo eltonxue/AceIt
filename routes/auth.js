@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-const models = require('../database/models/index');
+const db = require('../database/models/index');
 
-const User = models.User;
-const QuestionBank = models.QuestionBank;
-const Feedback = models.Feedback;
+const User = db.User;
+const QuestionBank = db.QuestionBank;
+const Feedback = db.Feedback;
 
 // Logs the user in as a session user
 router.post('/login', function(req, res, next) {
