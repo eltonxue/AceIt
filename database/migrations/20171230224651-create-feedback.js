@@ -24,31 +24,31 @@ module.exports = {
         type: Sequelize.STRING
       },
       anger: {
-        defaultValue: 0.0,
+        defaultValue: 0.05,
         type: Sequelize.FLOAT
       },
       fear: {
-        defaultValue: 0.0,
+        defaultValue: 0.05,
         type: Sequelize.FLOAT
       },
       joy: {
-        defaultValue: 0.0,
+        defaultValue: 0.05,
         type: Sequelize.FLOAT
       },
       sadness: {
-        defaultValue: 0.0,
+        defaultValue: 0.05,
         type: Sequelize.FLOAT
       },
       analytical: {
-        defaultValue: 0.0,
+        defaultValue: 0.05,
         type: Sequelize.FLOAT
       },
       confident: {
-        defaultValue: 0.0,
+        defaultValue: 0.05,
         type: Sequelize.FLOAT
       },
       tentative: {
-        defaultValue: 0.0,
+        defaultValue: 0.05,
         type: Sequelize.FLOAT
       },
       createdAt: {

@@ -11,31 +11,31 @@ module.exports = (sequelize, DataTypes) => {
     },
     anger: {
       type: DataTypes.FLOAT,
-      defaultValue: 0.0
+      defaultValue: 0.05
     },
     fear: {
       type: DataTypes.FLOAT,
-      defaultValue: 0.0
+      defaultValue: 0.05
     },
     joy: {
       type: DataTypes.FLOAT,
-      defaultValue: 0.0
+      defaultValue: 0.05
     },
     sadness: {
       type: DataTypes.FLOAT,
-      defaultValue: 0.0
+      defaultValue: 0.05
     },
     analytical: {
       type: DataTypes.FLOAT,
-      defaultValue: 0.0
+      defaultValue: 0.05
     },
     confident: {
       type: DataTypes.FLOAT,
-      defaultValue: 0.0
+      defaultValue: 0.05
     },
     tentative: {
       type: DataTypes.FLOAT,
-      defaultValue: 0.0
+      defaultValue: 0.05
     }
   });
 

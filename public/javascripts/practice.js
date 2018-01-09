@@ -1,7 +1,7 @@
 const mainContainer = $('#main-container');
 const chooseBankContainer = $('#choose-bank-container');
 
-const createFeedback = (questionText, instructions, article, tones) => {
+const createFeedback = (questionText, article, tones) => {
   // Parse tones
 
   console.log(tones);
@@ -166,7 +166,7 @@ let timer = $('#timer');
 let recordInterval = null;
 
 const startTimer = mediaRecorder => {
-  let count = 60;
+  let count = 5;
 
   recordInterval = setInterval(function() {
     count -= 1;
@@ -176,19 +176,13 @@ const startTimer = mediaRecorder => {
     }
     $('#timer').text(`00:${seconds}`);
     console.log(count);
-    if (count === -1) {
+    if (count === 0) {
       clearInterval(recordInterval);
-      let questionText = Questions[index];
 
-      let instructions = $('#instructions').val();
-
+      // Stop media recording
       mediaRecorder.stop();
-
-      createFeedback(questionText, instructions, []);
-
-      $('#record-response-container').remove();
-
-      // Record recognition
+      console.log(mediaRecorder.state);
+      console.log('Recording has stopped.');
     }
   }, 1000);
 };
@@ -280,12 +274,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             axios
               .patch('/action/feedback/update', data)
               .then(response => {
-                createFeedback(
-                  questionText,
-                  instructions,
-                  clipContainer,
-                  response.data
-                );
+                createFeedback(questionText, clipContainer, response.data);
 
                 $('#record-response-container').remove();
               })

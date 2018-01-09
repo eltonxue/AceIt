@@ -127,38 +127,38 @@ router.patch('/feedback/update', upload.single('blob'), function(
             content_type: 'text/plain'
           },
           function(err, results) {
+            let parsedTones = {
+              Anger: 0.05,
+              Fear: 0.05,
+              Joy: 0.05,
+              Sadness: 0.05,
+              Analytical: 0.05,
+              Confident: 0.05,
+              Tentative: 0.05
+            };
             if (err) {
-              res.send(err);
+              // Send default
+              res.send(parsedTones);
             } else {
-              let parsedTones = {
-                Anger: 0.05,
-                Fear: 0.05,
-                Joy: 0.05,
-                Sadness: 0.05,
-                Analytical: 0.05,
-                Confident: 0.05,
-                Tentative: 0.05
-              };
               let tones = results.document_tone.tones;
               console.log(tones);
-              if (tones) {
-                tones.forEach(function(tone) {
-                  parsedTones[tone.tone_name] = tone.score;
-                });
 
-                const nameSplit = data.name.split('-');
-                const userId = nameSplit[0];
-                const feedbackId = nameSplit[1];
-                db.sequelize
-                  .query(
-                    `UPDATE "Feedbacks" SET ("path", "question", "anger","fear","joy","sadness","analytical","confident","tentative","updatedAt") = ('${filePath}', '${data.question}', ${parsedTones.Anger}, ${parsedTones.Fear}, ${parsedTones.Joy}, ${parsedTones.Sadness}, ${parsedTones.Analytical}, ${parsedTones.Confident}, ${parsedTones.Tentative}, CURRENT_TIMESTAMP) WHERE id = ${feedbackId} RETURNING *`,
-                    { type: sequelize.QueryTypes.UPDATE }
-                  )
-                  .then(feedback => {
-                    console.log(feedback);
-                    res.json(parsedTones);
-                  });
-              }
+              tones.forEach(function(tone) {
+                parsedTones[tone.tone_name] = tone.score;
+              });
+
+              const nameSplit = data.name.split('-');
+              const userId = nameSplit[0];
+              const feedbackId = nameSplit[1];
+              db.sequelize
+                .query(
+                  `UPDATE "Feedbacks" SET ("path", "question", "anger","fear","joy","sadness","analytical","confident","tentative","updatedAt") = ('${filePath}', '${data.question}', ${parsedTones.Anger}, ${parsedTones.Fear}, ${parsedTones.Joy}, ${parsedTones.Sadness}, ${parsedTones.Analytical}, ${parsedTones.Confident}, ${parsedTones.Tentative}, CURRENT_TIMESTAMP) WHERE id = ${feedbackId} RETURNING *`,
+                  { type: sequelize.QueryTypes.UPDATE }
+                )
+                .then(feedback => {
+                  console.log(feedback);
+                  res.json(parsedTones);
+                });
             }
           }
         );
