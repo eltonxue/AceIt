@@ -80,7 +80,6 @@ router.patch('/feedback/update', upload.single('blob'), function(
   );
 
   // Retrieves data from API
-
   var speech_to_text = new SpeechToTextV1({
     username: '6a88e235-4937-46cd-8f93-646fccbea760',
     password: 'LvDs4WmdjNH2'
@@ -102,16 +101,11 @@ router.patch('/feedback/update', upload.single('blob'), function(
   let transcript = '';
   ['data', 'error', 'close'].forEach(function(eventName) {
     recognizeStream.on(eventName, function(results) {
-      console.log(eventName);
-      console.log(results);
       if (eventName === 'data') {
         transcript += results;
-        console.log(results);
-        console.log(transcript);
       } else if (eventName === 'close') {
         // READ FROM TRANSCRIPT FILE
         console.log('Transcript: ' + transcript);
-        console.log(typeof transcript);
         let arr = transcript.split(' ');
         arr = arr.map((current, i) => {
           // Average sentence length = 10, 14
@@ -136,7 +130,35 @@ router.patch('/feedback/update', upload.single('blob'), function(
             if (err) {
               res.send(err);
             } else {
-              res.json(results.document_tone);
+              let parsedTones = {
+                Anger: 0.05,
+                Fear: 0.05,
+                Joy: 0.05,
+                Sadness: 0.05,
+                Analytical: 0.05,
+                Confident: 0.05,
+                Tentative: 0.05
+              };
+              let tones = results.document_tone.tones;
+              console.log(tones);
+              if (tones) {
+                tones.forEach(function(tone) {
+                  parsedTones[tone.tone_name] = tone.score;
+                });
+
+                const nameSplit = data.name.split('-');
+                const userId = nameSplit[0];
+                const feedbackId = nameSplit[1];
+                db.sequelize
+                  .query(
+                    `UPDATE "Feedbacks" SET ("path", "question", "anger","fear","joy","sadness","analytical","confident","tentative","updatedAt") = ('${filePath}', '${data.question}', ${parsedTones.Anger}, ${parsedTones.Fear}, ${parsedTones.Joy}, ${parsedTones.Sadness}, ${parsedTones.Analytical}, ${parsedTones.Confident}, ${parsedTones.Tentative}, CURRENT_TIMESTAMP) WHERE id = ${feedbackId} RETURNING *`,
+                    { type: sequelize.QueryTypes.UPDATE }
+                  )
+                  .then(feedback => {
+                    console.log(feedback);
+                    res.json(parsedTones);
+                  });
+              }
             }
           }
         );

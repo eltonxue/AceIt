@@ -3,6 +3,7 @@ const chooseBankContainer = $('#choose-bank-container');
 
 const createFeedback = (questionText, instructions, article, tones) => {
   // Parse tones
+
   console.log(tones);
 
   // Create feedback
@@ -57,7 +58,7 @@ const createFeedback = (questionText, instructions, article, tones) => {
       datasets: [
         {
           label: 'Feedback',
-          data: [0.4, 0.3, 0.7, 0.1, 0.4, 0.9, 0.5],
+          data: Object.values(tones),
           backgroundColor: [
             'rgba(255, 99, 132, 0.5)',
             'rgba(54, 162, 235, 0.5)',
@@ -243,7 +244,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
       mediaRecorder.onstop = e => {
         let questionText = Questions[index];
-        let instructions = $('#instructions').val();
 
         // Create dummy feedback to get UserId + ID
         axios
@@ -275,6 +275,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
             data.append('blob', blob);
             data.append('name', clipName);
+            data.append('question', questionText);
 
             axios
               .patch('/action/feedback/update', data)
@@ -283,7 +284,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                   questionText,
                   instructions,
                   clipContainer,
-                  response.data.tones
+                  response.data
                 );
 
                 $('#record-response-container').remove();
@@ -322,6 +323,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         $('#instructions').text(
           'Gathering data... (this may take up to 1 minute)'
         );
+        $('#stop').css('background-color', 'lightgrey');
       });
     })
     // Error callback
