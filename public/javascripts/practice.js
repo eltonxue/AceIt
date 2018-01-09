@@ -1,8 +1,12 @@
 const mainContainer = $('#main-container');
 const chooseBankContainer = $('#choose-bank-container');
 
-const createFeedback = (questionText, recordedText, article) => {
+const createFeedback = (questionText, instructions, article, tones) => {
+  // Parse tones
+  console.log(tones);
+
   // Create feedback
+
   let feedbackContainer = $('<div>', {
     class: 'row flex-center',
     id: 'feedback-container'
@@ -34,21 +38,6 @@ const createFeedback = (questionText, recordedText, article) => {
 
   $('#record-response-container').remove();
   mainContainer.append(feedbackContainer);
-
-  // Calculate API
-  console.log(recordedText);
-  axios
-    .post('/api/tone-analyzer', {
-      username: '8be17060-7d16-4dde-b8db-2f789916806c',
-      password: 'pxQuQ0lbWszM',
-      text: recordedText
-    })
-    .then(function(response) {
-      console.log(response);
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
 
   // Build chart
   Chart.defaults.global.defaultFontColor = 'white';
@@ -127,23 +116,38 @@ const createTimer = question => {
   let timer = $('<div>', { class: 'col-md-12', id: 'timer' });
   timer.text('1:00');
 
-  let qContainer = $('<div>', { class: 'col-md-12', id: 'question' });
-  let text = $('<textarea>', { id: 'recorded-text', disabled: 'disabled' });
-  let q = $('<h1>');
-  q.text(question);
+  let instructionsContainer = $('<div>', {
+    class: 'flex-center',
+    id: 'instructions'
+  });
 
-  qContainer.append(text);
-  qContainer.append(q);
+  let questionContainer = $('<div>', {
+    class: 'col-md-12',
+    id: 'question'
+  });
 
-  let bContainer = $('<div>', { class: 'col-md-12', id: 'control-buttons' });
+  let buttonsContainer = $('<div>', {
+    class: 'col-md-12',
+    id: 'control-buttons'
+  });
+
+  let instructionsText = $('<p>');
+  instructionsText.text('Click to Start Recording');
+  instructionsContainer.append(instructionsText);
+
+  let questionText = $('<h1>');
+  questionText.text(question);
+  questionContainer.append(questionText);
+
   let startButton = $('<div>', { class: 'btn mt-0', id: 'start' });
   let icon = $('<span>', { class: 'fa fa-play-circle fa-3x' });
   startButton.append(icon);
-  bContainer.append(startButton);
+  buttonsContainer.append(startButton);
 
   recordResponseContainer.append(timer);
-  recordResponseContainer.append(qContainer);
-  recordResponseContainer.append(bContainer);
+  recordResponseContainer.append(instructionsContainer);
+  recordResponseContainer.append(questionContainer);
+  recordResponseContainer.append(buttonsContainer);
 
   chooseBankContainer.remove();
   mainContainer.append(recordResponseContainer);
@@ -175,11 +179,11 @@ const startTimer = mediaRecorder => {
       clearInterval(recordInterval);
       let questionText = Questions[index];
 
-      let recordedText = $('#recorded-text').val();
+      let instructions = $('#instructions').val();
 
       mediaRecorder.stop();
 
-      createFeedback(questionText, recordedText);
+      createFeedback(questionText, instructions, []);
 
       $('#record-response-container').remove();
 
@@ -239,17 +243,18 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
       mediaRecorder.onstop = e => {
         let questionText = Questions[index];
-        let recordedText = $('#recorded-text').val();
+        let instructions = $('#instructions').val();
 
         // Create dummy feedback to get UserId + ID
         axios
           .post('/action/feedback', {
-            question: 'Dummy Question'
+            question: questionText
           })
           .then(response => {
             console.log(response);
 
-            let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
+            let blob = new Blob(chunks, { type: 'audio/wav' });
+
             chunks = [];
             let audioURL = window.URL.createObjectURL(blob);
 
@@ -266,12 +271,24 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
             audio.src = audioURL;
 
-            console.log(blob);
-            console.log(audioURL);
+            const data = new FormData();
 
-            createFeedback(questionText, recordedText, clipContainer);
+            data.append('blob', blob);
+            data.append('name', clipName);
 
-            $('#record-response-container').remove();
+            axios
+              .patch('/action/feedback/update', data)
+              .then(response => {
+                createFeedback(
+                  questionText,
+                  instructions,
+                  clipContainer,
+                  response.data.tones
+                );
+
+                $('#record-response-container').remove();
+              })
+              .catch(err => console.log(err));
           })
           .catch(err => console.log(err));
 
@@ -293,6 +310,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
         // Starts media recording
         mediaRecorder.start();
+        $('#instructions').text('Recording...');
         console.log(mediaRecorder.state);
         console.log('Recording audio...');
       });
@@ -301,6 +319,9 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       mainContainer.on('click', '#stop', function(e) {
         clearInterval(recordInterval);
         mediaRecorder.stop();
+        $('#instructions').text(
+          'Gathering data... (this may take up to 1 minute)'
+        );
       });
     })
     // Error callback

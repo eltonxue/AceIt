@@ -1,6 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var sequelize = require('sequelize');
+var fs = require('fs');
+var axios = require('axios');
+var multer = require('multer');
+var upload = multer({ dest: './public/recordings' });
+
+var SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
+var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 
 const db = require('../database/models/index');
 
@@ -55,8 +62,89 @@ router.post('/feedback', function(req, res, next) {
     .catch(err => res.send(err));
 });
 
-router.patch('/feedback/update', function(req, res, next) {
+router.patch('/feedback/update', upload.single('blob'), function(
+  req,
+  res,
+  next
+) {
   const data = req.body;
+
+  console.log(req.file);
+  console.log(data);
+
+  const filePath = `${__dirname}/../public/recordings/${data.name}.flac`;
+
+  fs.renameSync(
+    `${__dirname}/../public/recordings/${req.file.filename}`,
+    filePath
+  );
+
+  // Retrieves data from API
+
+  var speech_to_text = new SpeechToTextV1({
+    username: '6a88e235-4937-46cd-8f93-646fccbea760',
+    password: 'LvDs4WmdjNH2'
+  });
+  let params = {
+    content_type: 'audio/wav'
+  };
+
+  var recognizeStream = speech_to_text.createRecognizeStream(params);
+
+  fs.createReadStream(filePath).pipe(recognizeStream);
+
+  recognizeStream.pipe(
+    fs.createWriteStream('./public/recordings/transcription.txt')
+  );
+
+  recognizeStream.setEncoding('utf8'); // to get strings instead of Buffers from `data` events
+
+  let transcript = '';
+  ['data', 'error', 'close'].forEach(function(eventName) {
+    recognizeStream.on(eventName, function(results) {
+      console.log(eventName);
+      console.log(results);
+      if (eventName === 'data') {
+        transcript += results;
+        console.log(results);
+        console.log(transcript);
+      } else if (eventName === 'close') {
+        // READ FROM TRANSCRIPT FILE
+        console.log('Transcript: ' + transcript);
+        console.log(typeof transcript);
+        let arr = transcript.split(' ');
+        arr = arr.map((current, i) => {
+          // Average sentence length = 10, 14
+          return i % 7 === 0 && i !== 0 ? `${current}.` : current;
+        });
+
+        transcript = arr.join(' ');
+        console.log('Transcript updated: ' + transcript);
+
+        var tone_analyzer = new ToneAnalyzerV3({
+          username: '8be17060-7d16-4dde-b8db-2f789916806c',
+          password: 'pxQuQ0lbWszM',
+          version_date: '2017-09-21'
+        });
+
+        tone_analyzer.tone(
+          {
+            tone_input: transcript,
+            content_type: 'text/plain'
+          },
+          function(err, results) {
+            if (err) {
+              res.send(err);
+            } else {
+              res.json(results.document_tone);
+            }
+          }
+        );
+      }
+    });
+  });
+
+  // db.sequelize.query('UPDATE "Feedbacks"("question")')
 });
 
 // Add new Question Bank
