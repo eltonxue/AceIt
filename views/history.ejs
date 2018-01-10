@@ -2,7 +2,7 @@
 <html>
   <head>
     <% include ./header %>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
   </head>
   <body>
     <% include ./navigation-logged-in %>
@@ -13,16 +13,47 @@
           <h1>History</h1>
         </div>
         <div class="col-md-2 flex-right">
-          <div class="btn btn-3" id="clear-history">Clear</div>
+          <div class="btn btn-3" id="clear">Clear</div>
         </div>
+      </div>
+      <div class="row mt-4 flex-center" id="history-container">
+
+
+
+
+
+
+        <!-- <div class="feedback-card">
+          <h1>"How well do you work in a team?"</h1>
+          <canvas id="feedback-chart-1" width="800" height="400"></canvas>
+          <article class="clip flex-center">
+            <audio controls></audio>
+          </article>
+          <p class="last-updated mt-5 mb-0">Recorded on: 1/8/2018 @ 18:20:25</p>
+        </div>
+        <div class="feedback-card">
+          <h1>"How well do you work in a team?"</h1>
+          <canvas id="feedback-chart-2" width="800" height="400"></canvas>
+          <article class="clip flex-center">
+            <audio controls></audio>
+          </article>
+          <p class="last-updated mt-5 mb-0">Recorded on: 1/8/2018 @ 18:20:25</p>
+        </div>
+        <div class="feedback-card-3">
+          <h1>"How well do you work in a team?"</h1>
+          <canvas id="feedback-chart-4" width="800" height="400"></canvas>
+          <article class="clip flex-center">
+            <audio controls></audio>
+          </article>
+          <p class="last-updated mt-5 mb-0">Recorded on: 1/8/2018 @ 18:20:25</p>
+        </div> -->
       </div>
 
     </div>
 
   </body>
   <footer>
-
     <% include ./footer %>
-    <script src="javascripts/index.js"></script>
+    <script src="javascripts/history.js"></script>
   </footer>
 </html>

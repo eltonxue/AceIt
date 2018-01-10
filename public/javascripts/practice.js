@@ -166,7 +166,7 @@ let timer = $('#timer');
 let recordInterval = null;
 
 const startTimer = mediaRecorder => {
-  let count = 5;
+  let count = 60;
 
   recordInterval = setInterval(function() {
     count -= 1;
@@ -183,6 +183,10 @@ const startTimer = mediaRecorder => {
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
       console.log('Recording has stopped.');
+      $('#instructions').text(
+        'Gathering data... (this may take up to 1 minute)'
+      );
+      $('#stop').css('background-color', 'lightgrey');
     }
   }, 1000);
 };
@@ -237,6 +241,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       };
 
       mediaRecorder.onstop = e => {
+        $('#stop').attr('id', '');
         let questionText = Questions[index];
 
         // Create dummy feedback to get UserId + ID

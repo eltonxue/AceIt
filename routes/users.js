@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sequelize = require('sequelize');
+var fs = require('fs');
 
 var Op = sequelize.Op;
 
@@ -8,6 +9,7 @@ const db = require('../database/models/index');
 
 const User = db.User;
 const QuestionBank = db.QuestionBank;
+const Feedback = db.Feedback;
 
 // Get session user
 router.get('/', function(req, res, next) {
@@ -21,7 +23,27 @@ router.get('/all', function(req, res, next) {
 
 // Get session user's history ordered based on date
 router.get('/history', function(req, res, next) {
-  res.send('respond with a resource');
+  // Get all feedback with session user's ID
+
+  db.sequelize
+    .query(
+      `SELECT * FROM "Feedbacks" WHERE "UserId" = ${req.session.user.id}`,
+      {
+        type: sequelize.QueryTypes.SELECT
+      }
+    )
+    .then(history => {
+      // Replace history with buffer/stream
+      let results = history.map(function(feedback) {
+        feedback.audio = fs.readFileSync(feedback.path);
+        delete feedback.path;
+        return feedback;
+      });
+      console.log('-----UPDATED HISTORY-----');
+      console.log(results);
+      res.json(results);
+    })
+    .catch(err => console.log(err));
 });
 
 // Get session user's question banks
@@ -52,16 +74,6 @@ router.get('/banks/search=:input', function(req, res, next) {
   })
     .then(banks => res.send(banks))
     .catch(err => res.send(err));
-});
-
-// Get users with search input
-router.get('/search=:input', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-// Get user's question banks based on username
-router.get('/get/banks/:username', function(req, res, next) {
-  res.send('respond with a resource');
 });
 
 // Get user based on username

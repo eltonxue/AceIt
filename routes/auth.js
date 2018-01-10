@@ -63,16 +63,7 @@ router.post('/register', function(req, res, next) {
                 const userData = {
                   username: data.username,
                   password: data.password,
-                  email: data.email,
-                  QuestionBanks: {
-                    title: 'Example Question Bank',
-                    questions: [
-                      'Tell me about yourself.',
-                      'Why do you want to work for us?',
-                      'Do you have any questions?'
-                    ]
-                  },
-                  Feedbacks: {}
+                  email: data.email
                 };
 
                 // Create a user given the data (history and questionBanks values created by default)
