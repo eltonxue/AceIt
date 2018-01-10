@@ -138,4 +138,8 @@ $('#clear').click(() => {
   $('#history-container').empty();
 
   // AJAX call to delete all Feedbacks
+  axios
+    .delete('/action/feedback/clear')
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
 });

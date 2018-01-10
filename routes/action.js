@@ -62,6 +62,17 @@ router.post('/feedback', function(req, res, next) {
     .catch(err => res.send(err));
 });
 
+// Delete all history with session user's ID
+router.delete('/feedback/clear', function(req, res, next) {
+  db.sequelize
+    .query(
+      `DELETE FROM "Feedbacks" WHERE "UserId" = ${req.session.user
+        .id} RETURNING *`
+    )
+    .then(feedbacks => res.send(feedbacks))
+    .catch(err => res.send(err));
+});
+
 router.patch('/feedback/update', upload.single('blob'), function(
   req,
   res,
