@@ -24,6 +24,11 @@ a {
   color: #00b7ff;
 }
 
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
 ul {
   list-style-type: none;
 }
@@ -431,6 +436,13 @@ input {
 .feedback-card > h1 {
   text-align: center;
   margin: 10px;
+}
+
+.btn-redirect {
+  margin: 30px;
+  height: 120px;
+  width: 300px;
+  font-size: 30px;
 }
 
 audio::-webkit-media-controls-panel {

@@ -26,20 +26,26 @@
             <h1 class="display-4" id="popular-questions-label">Here's What People Are Asking.</h1>
           </div>
           <ul class="col-md-12" id="popular-questions">
+            <% for (let i = 0; i < questions.length; ++i) { %>
               <li class="question-card flex-center row">
+                <a class="col-md-3 username" href="/username=<%= questions[i].username %>"><span class="fa fa-user mr-2"></span><%= questions[i].username %> </a>
+                <div class="col-md-9 question"><%= questions[i].question %></div>
+              </li>
+            <% } %>
 
-                <div class="col-md-3 username"><span class="fa fa-user mr-2"></span>soniaxu96 </div>
-                <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
-              </li>
-              <li class="question-card flex-center row">
-                <div class="col-md-3 username"><span class="fa fa-user mr-2"></span>eltonxue112 </div>
-                <div class="col-md-9 question">What is your biggest strength?</div>
-              </li>
-              <li class="question-card flex-center row">
-                <div class="col-md-3 username"><span class="fa fa-user mr-2"></span>piatheplant</div>
-                <div class="col-md-9 question">How do you deal with being under pressure?</div>
-              </li>
+            <!-- <li class="question-card flex-center row">
 
+              <div class="col-md-3 username"><span class="fa fa-user mr-2"></span>soniaxu96 </div>
+              <div class="col-md-9 question">Tell me about a time when you were confronted by a teammate.</div>
+            </li>
+            <li class="question-card flex-center row">
+              <div class="col-md-3 username"><span class="fa fa-user mr-2"></span>eltonxue112 </div>
+              <div class="col-md-9 question">What is your biggest strength?</div>
+            </li>
+            <li class="question-card flex-center row">
+              <div class="col-md-3 username"><span class="fa fa-user mr-2"></span>piatheplant</div>
+              <div class="col-md-9 question">How do you deal with being under pressure?</div>
+            </li> -->
           </ul>
         </div>
       </div>

@@ -9,10 +9,20 @@ const db = require('../database/models/index');
 
 const User = db.User;
 const QuestionBank = db.QuestionBank;
+const Question = db.Question;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { user: req.session.user });
+  db.sequelize
+    .query(`SELECT * FROM "Questions"`)
+    .then(results => {
+      let questions = results[0];
+      questions.reverse();
+      questions = questions.slice(0, 3);
+      console.log(questions);
+      res.render('index', { user: req.session.user, questions });
+    })
+    .catch(err => res.send(err));
 });
 
 // Gets registration page

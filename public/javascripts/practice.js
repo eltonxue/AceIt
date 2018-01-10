@@ -1,9 +1,52 @@
 const mainContainer = $('#main-container');
 const chooseBankContainer = $('#choose-bank-container');
 
-const createFeedback = (questionText, article, tones) => {
-  // Parse tones
+const createRedirects = () => {
+  $('#feedback-container').remove(); // Remove previous container
 
+  $('#content-title').html(
+    "Mock Interview Complete <span class='fa fa-battery-full'></span>"
+  );
+
+  let completeContainer = $('<div>', {
+    id: 'complete-container',
+    class: 'row flex-center'
+  });
+
+  let startOverContainer = $('<div>', { class: 'col-md-12 flex-center mt-5' });
+  let startOver = $('<button>', { class: 'btn btn-4 btn-redirect' });
+  startOver.text('Start Over');
+  startOver.click(() => (window.location.href = '/practice'));
+
+  startOverContainer.append(startOver);
+
+  let homeContainer = $('<div>', { class: 'col-md-12 flex-center' });
+  let banksContainer = $('<div>', { class: 'col-md-12 flex-center' });
+  let historyContainer = $('<div>', { class: 'col-md-12 flex-center' });
+
+  let toHome = $('<button>', { class: 'btn btn-5 btn-redirect' });
+  toHome.text('Home');
+  toHome.click(() => (window.location.href = '/'));
+  let toBanks = $('<button>', { class: 'btn btn-5 btn-redirect' });
+  toBanks.text('Question Banks');
+  toBanks.click(() => (window.location.href = '/question-banks'));
+  let toHistory = $('<button>', { class: 'btn btn-5 btn-redirect' });
+  toHistory.text('Feedback History');
+  toHistory.click(() => (window.location.href = '/history'));
+
+  homeContainer.append(toHome);
+  banksContainer.append(toBanks);
+  historyContainer.append(toHistory);
+
+  completeContainer.append(startOverContainer);
+  completeContainer.append(homeContainer);
+  completeContainer.append(banksContainer);
+  completeContainer.append(historyContainer);
+
+  mainContainer.append(completeContainer);
+};
+
+const createFeedback = (questionText, article, tones) => {
   console.log(tones);
 
   // Create feedback
@@ -334,6 +377,8 @@ mainContainer.on('click', '#next', function(e) {
   index++;
   if (index >= Questions.length) {
     console.log('Went through all the questions');
+
+    createRedirects();
   } else {
     console.log('next');
     createTimer(Questions[index]);
