@@ -14,6 +14,7 @@ const db = require('../database/models/index');
 const User = db.User;
 const QuestionBank = db.QuestionBank;
 const Feedback = db.Feedback;
+const Question = db.Question;
 
 // Update password
 router.patch('/update-password', function(req, res, next) {
@@ -134,7 +135,7 @@ router.patch('/feedback/update', upload.single('blob'), function(
 
         tone_analyzer.tone(
           {
-            tone_input: transcript,
+            tone_input: transcript ? transcript : ' ',
             content_type: 'text/plain'
           },
           function(err, results) {
@@ -151,15 +152,14 @@ router.patch('/feedback/update', upload.single('blob'), function(
               // Send default
               res.send(parsedTones);
             } else {
+              console.log('Results: ' + JSON.stringify(results));
               let tones = results.document_tone.tones;
-              console.log(tones);
 
               tones.forEach(function(tone) {
                 parsedTones[tone.tone_name] = tone.score;
               });
 
               const nameSplit = data.name.split('-');
-              const userId = nameSplit[0];
               const feedbackId = nameSplit[1];
               db.sequelize
                 .query(
@@ -168,16 +168,27 @@ router.patch('/feedback/update', upload.single('blob'), function(
                 )
                 .then(feedback => {
                   console.log(feedback);
-                  res.json(parsedTones);
-                });
+
+                  db.sequelize
+                    .query(
+                      `INSERT INTO "Questions"("username", "question", "createdAt", "updatedAt") VALUES ('${req
+                        .session.user
+                        .username}', '${data.question}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *`,
+                      { type: sequelize.QueryTypes.INSERT }
+                    )
+                    .then(results => {
+                      console.log(results);
+                      res.json(parsedTones);
+                    })
+                    .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err));
             }
           }
         );
       }
     });
   });
-
-  // db.sequelize.query('UPDATE "Feedbacks"("question")')
 });
 
 // Add new Question Bank
