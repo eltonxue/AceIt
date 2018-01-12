@@ -320,7 +320,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             data.append('question', questionText);
 
             axios
-              .patch('/action/feedback/update', data)
+              .patch('/action/feedback/api', data)
               .then(response => {
                 createFeedback(questionText, clipContainer, response.data);
 

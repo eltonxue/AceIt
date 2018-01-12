@@ -13,9 +13,7 @@ router.post('/login', function(req, res, next) {
   console.log(
     `LOGGING IN username: ${data.username}, password: ${data.password}`
   );
-
   User.findOne({ where: { username: data.username } }).then(function(user) {
-    console.log(user);
     if (!user) {
       res.send({ type: 'username', error: 'User does not exist' });
     } else {

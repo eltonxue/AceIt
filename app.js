@@ -8,9 +8,7 @@ var session = require('client-sessions');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var api = require('./routes/api');
 var auth = require('./routes/auth');
-var globe = require('./routes/global');
 var action = require('./routes/action');
 
 var app = express();
@@ -64,8 +62,6 @@ app.use(function(req, res, next) {
 app.use('/auth', auth);
 app.use('/', index);
 app.use('/users', users);
-app.use('/api', api);
-app.use('/global', globe);
 app.use('/action', action);
 
 // catch 404 and forward to error handler

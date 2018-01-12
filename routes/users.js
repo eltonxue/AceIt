@@ -11,33 +11,26 @@ const User = db.User;
 const QuestionBank = db.QuestionBank;
 const Feedback = db.Feedback;
 
-// Get session user
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-// Get all users
-router.get('/all', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
 // Get session user's history ordered based on date
 router.get('/history', function(req, res, next) {
   // Get all feedback with session user's ID
 
   db.sequelize
-    .query(
-      `SELECT * FROM "Feedbacks" WHERE "UserId" = ${req.session.user.id}`,
-      {
-        type: sequelize.QueryTypes.SELECT
-      }
-    )
+    .query(`SELECT * FROM "Feedbacks" WHERE "UserId" = ${req.session.user.id}`, {
+      type: sequelize.QueryTypes.SELECT
+    })
     .then(history => {
       // Replace history with buffer/stream
       let results = history.map(function(feedback) {
-        feedback.audio = fs.readFileSync(feedback.path);
-        delete feedback.path;
-        return feedback;
+        try {
+          feedback.audio = fs.readFileSync(feedback.path);
+        } catch (err) {
+          feedback.audio = 'File does not exist';
+          // Catch if file/directory does not exist
+        } finally {
+          delete feedback.path;
+          return feedback;
+        }
       });
       console.log('-----UPDATED HISTORY-----');
       console.log(results);
@@ -74,11 +67,6 @@ router.get('/banks/search=:input', function(req, res, next) {
   })
     .then(banks => res.send(banks))
     .catch(err => res.send(err));
-});
-
-// Get user based on username
-router.get('/get/:username', function(req, res, next) {
-  res.send('respond with a resource');
 });
 
 module.exports = router;

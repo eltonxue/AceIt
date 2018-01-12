@@ -10,7 +10,7 @@
   "test": {
     "username": "eltonxue",
     "password": null,
-    "database": "aceit-devs",
+    "database": "test-aceit-devs",
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
