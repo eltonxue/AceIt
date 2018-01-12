@@ -7,9 +7,7 @@ var Op = sequelize.Op;
 
 const db = require('../database/models/index');
 
-const User = db.User;
-const QuestionBank = db.QuestionBank;
-const Feedback = db.Feedback;
+const { User, QuestionBank, Feedback } = db;
 
 // Get session user's history ordered based on date
 router.get('/history', function(req, res, next) {

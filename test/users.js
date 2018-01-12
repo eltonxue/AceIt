@@ -180,5 +180,37 @@ describe('Users', function() {
 
       done();
     });
+
+    it('Should successfully GET all question banks of session user that fit search input', function(done) {
+      agent.get('/users/banks/search=Te').end(function(err, res) {
+        console.log(res.body);
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.forEach(bank => {
+          bank.should.have.property('id');
+          bank.should.have.property('title');
+          bank.should.have.property('questions');
+          bank.should.have.property('createdAt');
+          bank.should.have.property('updatedAt');
+          bank.should.have.property('UserId');
+        });
+
+        const bank1 = res.body[0];
+        const bank2 = res.body[1];
+
+        bank1.id.should.equal(1);
+        bank1.title.should.equal('Team Questions');
+        bank1.questions.should.have.lengthOf(3);
+        bank1.questions.indexOf('Are you a leader?').should.not.equal(-1);
+        bank1.questions.indexOf('Are you a follower?').should.not.equal(-1);
+        bank1.questions.indexOf('How well do you work in a team?').should.not.equal(-1);
+        bank2.id.should.equal(2);
+        bank2.title.should.equal('Technical Questions');
+        bank2.questions.should.have.lengthOf(1);
+        bank2.questions.indexOf('Which project on your resume are you most proud of?').should.not.equal(-1);
+
+        done();
+      });
+    });
   });
 });
