@@ -21,15 +21,15 @@ router.patch('/update-password', function(req, res, next) {
   const data = req.body;
   console.log(req.session.user);
   if (data.newPassword.length <= 6 || data.confirmNewPassword.length <= 6) {
-    res.send({
+    return res.send({
       type: 'new-password',
       error: 'Passwords must be greater than 6 characters'
     });
   } else if (data.newPassword !== data.confirmNewPassword) {
-    res.send({ type: 'new-password', error: 'Passwords must match' });
+    return res.send({ type: 'new-password', error: 'Passwords must match' });
   }
   if (req.session.user.password !== data.oldPassword) {
-    res.send({ type: 'old-password', error: 'Wrong password' });
+    return res.send({ type: 'old-password', error: 'Wrong password' });
   } else {
     User.update(
       { password: data.newPassword },
@@ -41,7 +41,7 @@ router.patch('/update-password', function(req, res, next) {
     )
       .then(results => {
         req.session.user.password = data.newPassword;
-        res.send(results[1].dataValues);
+        return res.send(results[1].dataValues);
       })
       .catch(err => res.send(err));
   }
@@ -53,8 +53,8 @@ router.post('/feedback', function(req, res, next) {
 
   db.sequelize
     .query(
-      `INSERT INTO "Feedbacks"("question","UserId", "createdAt", "updatedAt") VALUES ('it works!!!', ${req
-        .session.user.id}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *`,
+      `INSERT INTO "Feedbacks"("question","UserId", "createdAt", "updatedAt") VALUES ('it works!!!', ${req.session.user
+        .id}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *`,
       { type: sequelize.QueryTypes.INSERT }
     )
     .then(results => {
@@ -71,10 +71,7 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
 
   const filePath = `${__dirname}/../public/recordings/${data.name}.flac`;
 
-  fs.renameSync(
-    `${__dirname}/../public/recordings/${req.file.filename}`,
-    filePath
-  );
+  fs.renameSync(`${__dirname}/../public/recordings/${req.file.filename}`, filePath);
 
   // Retrieves data from API
   var speech_to_text = new SpeechToTextV1({
@@ -89,9 +86,7 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
 
   fs.createReadStream(filePath).pipe(recognizeStream);
 
-  recognizeStream.pipe(
-    fs.createWriteStream('./public/recordings/transcription.txt')
-  );
+  recognizeStream.pipe(fs.createWriteStream('./public/recordings/transcription.txt'));
 
   recognizeStream.setEncoding('utf8'); // to get strings instead of Buffers from `data` events
 
@@ -135,7 +130,7 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
             };
             if (err) {
               // Send default
-              res.send(parsedTones);
+              return res.send(parsedTones);
             } else {
               console.log('Results: ' + JSON.stringify(results));
               let tones = results.document_tone.tones;
@@ -156,9 +151,8 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
 
                   db.sequelize
                     .query(
-                      `INSERT INTO "Questions"("username", "question", "createdAt", "updatedAt") VALUES ('${req
-                        .session.user
-                        .username}', '${data.question}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *`,
+                      `INSERT INTO "Questions"("username", "question", "createdAt", "updatedAt") VALUES ('${req.session
+                        .user.username}', '${data.question}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *`,
                       { type: sequelize.QueryTypes.INSERT }
                     )
                     .then(results => {
@@ -179,10 +173,7 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
 // Delete all history with session user's ID
 router.delete('/feedback/clear', function(req, res, next) {
   db.sequelize
-    .query(
-      `DELETE FROM "Feedbacks" WHERE "UserId" = ${req.session.user
-        .id} RETURNING *`
-    )
+    .query(`DELETE FROM "Feedbacks" WHERE "UserId" = ${req.session.user.id} RETURNING *`)
     .then(feedbacks => res.send(feedbacks))
     .catch(err => res.send(err));
 });
@@ -201,10 +192,11 @@ router.post('/bank', function(req, res, next) {
 
 // Delete Question Bank w/ bank id
 router.delete('/bank', function(req, res, next) {
-  const bankId = parseInt(req.query.bankId);
+  const bankId = req.query.bankId;
+  console.log(bankId);
 
   return QuestionBank.destroy({ where: { id: bankId } })
-    .then(() => res.send('Delete Successful'))
+    .then(results => res.send({ numberDeleted: results }))
     .catch(err => res.send(err));
 });
 
@@ -212,10 +204,7 @@ router.delete('/bank', function(req, res, next) {
 router.patch('/bank/update-title', function(req, res, next) {
   const data = req.body;
   const { bankId, newTitle } = data;
-  return QuestionBank.update(
-    { title: newTitle },
-    { where: { id: bankId }, returning: true, plain: true }
-  )
+  return QuestionBank.update({ title: newTitle }, { where: { id: bankId }, returning: true, plain: true })
     .then(results => res.send(results[1].dataValues))
     .catch(err => res.send(err));
 });
@@ -227,11 +216,7 @@ router.patch('/bank/add-question', function(req, res, next) {
 
   return QuestionBank.update(
     {
-      questions: sequelize.fn(
-        'array_append',
-        sequelize.col('questions'),
-        question
-      )
+      questions: sequelize.fn('array_append', sequelize.col('questions'), question)
     },
     { where: { id: bankId }, returning: true, plain: true }
   )
@@ -248,10 +233,7 @@ router.patch('/bank/remove-question', function(req, res, next) {
     .then(bank => {
       let questions = bank.questions;
       questions.splice(questions.indexOf(question), 1);
-      QuestionBank.update(
-        { questions },
-        { where: { id: bankId }, returning: true, plain: true }
-      )
+      QuestionBank.update({ questions }, { where: { id: bankId }, returning: true, plain: true })
         .then(results => res.send(results[1].dataValues))
         .catch(err => res.send(err));
     })

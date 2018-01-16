@@ -11,32 +11,35 @@ Test 'auth' route
 */
 
 describe('Auth', function() {
-  User.destroy({ where: {} });
-
   beforeEach(function(done) {
+    // Clear all databases
     console.log('---Before Each Test Run---');
-    const userData = {
-      username: 'soniaxu',
-      password: '123456789',
-      email: 'soniaxu96@gmail.com'
-    };
+    User.destroy({ where: {} })
+      .then(() => {
+        const userData = {
+          username: 'soniaxu',
+          password: '123456789',
+          email: 'soniaxu96@gmail.com'
+        };
 
-    User.create(userData, {
-      include: [
-        { model: QuestionBank, as: 'QuestionBanks' },
-        { model: Feedback, as: 'Feedbacks' }
-      ]
-    }).then(user => {
-      // console.log(user);
-      done();
-    });
+        User.create(userData)
+          .then(user => {
+            done();
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   });
 
   // After each test, clear the User database
   afterEach(function(done) {
     console.log('---After Each Test Run---');
-    User.destroy({ where: {} });
-    done();
+    // Clear all database
+    User.destroy({ where: {} })
+      .then(() => {
+        done();
+      })
+      .catch(err => console.log(err));
   });
 
   // ********* LOGIN ROUTE TESTING **********
@@ -46,7 +49,6 @@ describe('Auth', function() {
       .post('/auth/login')
       .send({ username: 'soniaxu', password: '123456789' })
       .end(function(err, res) {
-        console.log(res.body);
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
@@ -62,7 +64,6 @@ describe('Auth', function() {
       .post('/auth/login')
       .send({ username: 'eltonxue', password: '123456789' })
       .end(function(err, res) {
-        console.log(res.body);
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
@@ -80,7 +81,6 @@ describe('Auth', function() {
       .post('/auth/login')
       .send({ username: 'soniaxu', password: 'abcdefghi' })
       .end(function(err, res) {
-        console.log(res.body);
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
@@ -107,7 +107,7 @@ describe('Auth', function() {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-        console.log(res.body);
+
         res.body.should.have.property('id');
         res.body.should.have.property('username');
         res.body.should.have.property('password');
@@ -119,9 +119,7 @@ describe('Auth', function() {
       });
   });
 
-  it('Should fail registration and return User already exists error', function(
-    done
-  ) {
+  it('Should fail registration and return User already exists error', function(done) {
     chai
       .request(server)
       .post('/auth/register')
@@ -135,7 +133,7 @@ describe('Auth', function() {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-        console.log(res.body);
+
         res.body.should.have.property('type');
         res.body.should.have.property('error');
         res.body.type.should.equal('username');
@@ -144,9 +142,7 @@ describe('Auth', function() {
       });
   });
 
-  it('Should fail registration and return email already exists error', function(
-    done
-  ) {
+  it('Should fail registration and return email already exists error', function(done) {
     chai
       .request(server)
       .post('/auth/register')
@@ -160,7 +156,7 @@ describe('Auth', function() {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-        console.log(res.body);
+
         res.body.should.have.property('type');
         res.body.should.have.property('error');
         res.body.type.should.equal('email');
@@ -183,7 +179,7 @@ describe('Auth', function() {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-        console.log(res.body);
+
         res.body.should.have.property('type');
         res.body.should.have.property('error');
         res.body.type.should.equal('password');
@@ -192,9 +188,7 @@ describe('Auth', function() {
       });
   });
 
-  it('Should fail login and return Passwords must be > 6 characters error', function(
-    done
-  ) {
+  it('Should fail login and return Passwords must be > 6 characters error', function(done) {
     chai
       .request(server)
       .post('/auth/register')
@@ -208,13 +202,11 @@ describe('Auth', function() {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-        console.log(res.body);
+
         res.body.should.have.property('type');
         res.body.should.have.property('error');
         res.body.type.should.equal('password');
-        res.body.error.should.equal(
-          'Password must be greater than 6 characters'
-        );
+        res.body.error.should.equal('Password must be greater than 6 characters');
         done();
       });
   });
