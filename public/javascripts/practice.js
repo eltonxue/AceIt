@@ -4,9 +4,7 @@ const chooseBankContainer = $('#choose-bank-container');
 const createRedirects = () => {
   $('#feedback-container').remove(); // Remove previous container
 
-  $('#content-title').html(
-    "Mock Interview Complete <span class='fa fa-battery-full'></span>"
-  );
+  $('#content-title').html("Mock Interview Complete <span class='fa fa-battery-full'></span>");
 
   let completeContainer = $('<div>', {
     id: 'complete-container',
@@ -89,15 +87,7 @@ const createFeedback = (questionText, article, tones) => {
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: [
-        'Anger',
-        'Fear',
-        'Joy',
-        'Sadness',
-        'Analytical',
-        'Confident',
-        'Tentative'
-      ],
+      labels: ['Anger', 'Fear', 'Joy', 'Sadness', 'Analytical', 'Confident', 'Tentative'],
       datasets: [
         {
           label: 'Feedback',
@@ -226,10 +216,25 @@ const startTimer = mediaRecorder => {
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
       console.log('Recording has stopped.');
-      $('#instructions').text(
-        'Gathering data... (this may take up to 1 minute)'
-      );
-      $('#stop').css('background-color', 'lightgrey');
+      $('#instructions').text('Gathering data... (this may take up to 1 minute)');
+
+      let progressContainer = $('<div>', { class: 'flex-center' });
+      let progress = $('<div>', { class: 'progress', id: 'current-progress' });
+      let progressBar = $('<div>', {
+        class: 'flex-center progress-bar progress-bar-striped progress-bar-animated bg-success',
+        role: 'progressbar',
+        'aria-valuenow': '75',
+        'aria-valuemin': '0',
+        'aria-valuemax': '100'
+      });
+
+      progress.append(progressBar);
+      progressContainer.append(progress);
+
+      // $('#stop').replaceWith(progress);
+
+      $('#record-response-container').append(progressContainer);
+      $('#control-buttons').remove();
     }
   }, 1000);
 };
@@ -252,9 +257,7 @@ $('.question-bank-card').click(function(e) {
         return positive + negative;
       });
       console.log(Questions);
-      $('#content-title').html(
-        "Record Your Response <span class='fa fa-battery-2'></span>"
-      );
+      $('#content-title').html("Record Your Response <span class='fa fa-battery-2'></span>");
       index = 0;
       createTimer(Questions[index]);
     })
@@ -357,10 +360,29 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       mainContainer.on('click', '#stop', function(e) {
         clearInterval(recordInterval);
         mediaRecorder.stop();
-        $('#instructions').text(
-          'Gathering data... (this may take up to 1 minute)'
-        );
-        $('#stop').css('background-color', 'lightgrey');
+        $('#instructions').text('Gathering data... (this may take up to 1 minute)');
+        let progressContainer = $('<div>', { class: 'flex-center' });
+        let progress = $('<div>', { class: 'progress', id: 'current-progress' });
+        let progressBar = $('<div>', {
+          id: 'current-progress',
+          class: 'flex-center progress-bar progress-bar-striped progress-bar-animated bg-success',
+          role: 'progressbar',
+          'aria-valuenow': '75',
+          'aria-valuemin': '0',
+          'aria-valuemax': '100'
+        });
+        progressBar.text('Updating To Audio File');
+        progressBar.css('width', '0');
+
+        progress.append(progressBar);
+        progressContainer.append(progress);
+
+        // $('#stop').replaceWith(progress);
+
+        $('#record-response-container').append(progressContainer);
+        $('#control-buttons').remove();
+
+        progressBar.animate({ width: '35%' }, 1000);
       });
     })
     // Error callback

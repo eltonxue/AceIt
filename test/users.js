@@ -75,15 +75,23 @@ describe('Users', function() {
                         id: 3
                       };
 
-                      Feedback.create(feedbackData).then(() => {
-                        QuestionBank.create(bankData).then(() => {
-                          QuestionBank.create(bankData2).then(() => {
-                            QuestionBank.create(bankData3).then(() => {
-                              done();
-                            });
-                          });
-                        });
-                      });
+                      Feedback.create(feedbackData)
+                        .then(() => {
+                          QuestionBank.create(bankData)
+                            .then(() => {
+                              QuestionBank.create(bankData2)
+                                .then(() => {
+                                  QuestionBank.create(bankData3)
+                                    .then(() => {
+                                      done();
+                                    })
+                                    .catch(err => console.log(err));
+                                })
+                                .catch(err => console.log(err));
+                            })
+                            .catch(err => console.log(err));
+                        })
+                        .catch(err => console.log(err));
                     });
                 });
               })

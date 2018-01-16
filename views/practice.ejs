@@ -28,7 +28,7 @@
                 </ul>
               </li>
             <% } %>
-            <li class="choose-card question-bank-card">
+            <!-- <li class="choose-card question-bank-card">
               <div class="question-bank-label">
                 <h1>Technical Questions</h1>
               </div>
@@ -38,7 +38,7 @@
                 <li class="list-group-item">What are some of the new features included in ES6?</li>
                 <li class="list-group-item list-group-item-info">What are the 4 principles of object-oriented programming?</li>
               </ul>
-            </li>
+            </li> -->
 
           </ul>
 
@@ -56,11 +56,25 @@
           </div>
           <h1>How well do you work in a team?</h1>
         </h1>
+
         <div class="col-md-12" id="control-buttons">
           <div class="btn mt-2" id="start"><span class="fa fa-play-circle fa-3x"></span></div>
           <div class="btn mt-2" id="stop"><span class="fa fa-stop-circle fa-3x"></div>
         </div>
+
+        <div class="flex-center">
+          <div class="progress">
+            <div id="current-progress" class="flex-center progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 55%">
+              Updating to audio file
+            </div>
+          </div>
+        </div>
       </div>
+
+
+
+
+
     </div>
     <div class="row flex-center" id="feedback-container">
 
@@ -70,6 +84,7 @@
           <article class="clip flex-center">
             <audio controls></audio>
           </article>
+
 
         </div>
         <div class="col-md-12 flex-center">

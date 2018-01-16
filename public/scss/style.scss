@@ -426,6 +426,18 @@ input {
   background-color: $primary-red;
 }
 
+.progress {
+  width: 1000px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  font-size: 20px;
+  height: 40px;
+  color: darkgreen;
+}
+
 .feedback-card {
   background-color: $primary-dark;
   border-radius: 10px;

@@ -343,6 +343,16 @@ input {
 #stop {
   background-color: #d43326; }
 
+.progress {
+  width: 1000px;
+  margin-top: 10px;
+  border-radius: 10px; }
+
+.progress-bar {
+  font-size: 20px;
+  height: 40px;
+  color: darkgreen; }
+
 .feedback-card {
   background-color: #1f1f1f;
   border-radius: 10px;
