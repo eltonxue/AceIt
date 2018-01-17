@@ -2,6 +2,16 @@
 <html>
   <head>
     <% include ./header %>
+    <% if (user) { %>
+      <script src="/socket.io/socket.io.js"></script>
+      <script>
+      var socket = io({
+  query: {
+    id: '<%= user.id %>'
+  }
+});
+</script>
+    <% } %>
   </head>
   <body>
     <% if (user) { %>
@@ -28,7 +38,11 @@
           <ul class="col-md-12" id="popular-questions">
             <% for (let i = 0; i < questions.length; ++i) { %>
               <li class="question-card flex-center row">
-                <a class="col-md-3 username" href="/username=<%= questions[i].username %>"><span class="fa fa-user mr-2"></span><%= questions[i].username %> </a>
+                <% if (user) { %>
+                  <a class="col-md-3 username username-logged-in" href="/username=<%= questions[i].username %>"><span class="fa fa-user mr-2"></span><%= questions[i].username %> </a>
+                <% } else { %>
+                  <div class="col-md-3 username" href="/"><span class="fa fa-user mr-2"></span><%= questions[i].username %> </div>
+                <% } %>
                 <div class="col-md-9 question"><%= questions[i].question %></div>
               </li>
             <% } %>

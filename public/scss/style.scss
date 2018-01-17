@@ -258,7 +258,7 @@ input {
   transition-timing-function: linear;
 }
 
-.username:hover {
+.username-logged-in:hover {
   cursor: pointer;
   background-color: $primary-dark;
 }

@@ -204,7 +204,7 @@ input {
   transition-duration: .1s;
   transition-timing-function: linear; }
 
-.username:hover {
+.username-logged-in:hover {
   cursor: pointer;
   background-color: #1f1f1f; }
 

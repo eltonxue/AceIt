@@ -10,6 +10,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
 var action = require('./routes/action');
+var redirect = require('./routes/redirect');
 
 var app = express();
 
@@ -42,10 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
   if (req.session && req.session.user) {
-    User.findOne({ where: { email: req.session.user.email } }).then(function(
-      err,
-      user
-    ) {
+    User.findOne({ where: { email: req.session.user.email } }).then(function(err, user) {
       if (user) {
         req.user = user;
         delete req.user.password; // delete the password from the session
@@ -63,6 +61,8 @@ app.use('/auth', auth);
 app.use('/', index);
 app.use('/users', users);
 app.use('/action', action);
+// Redirects to index page if does not fit any preassigned routes
+app.use('/', redirect);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

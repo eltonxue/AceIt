@@ -35,6 +35,9 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
+// Process requireLogin middleware here
+router.use(auth.requireLogin);
+
 router.get('/username=:username', function(req, res, next) {
   // Gather user's info
   const { username } = req.params;
@@ -53,9 +56,6 @@ router.get('/username=:username', function(req, res, next) {
     .catch(err => res.send(err));
   // Redirect to user's page
 });
-
-// Process requireLogin middleware here
-router.use(auth.requireLogin);
 
 router.get('/question-banks', function(req, res, next) {
   QuestionBank.findAll({ where: { UserId: req.session.user.id } })

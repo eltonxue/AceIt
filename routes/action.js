@@ -167,7 +167,10 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
                       { type: sequelize.QueryTypes.INSERT }
                     )
                     .then(results => {
+                      // Send all sockets updated question
+                      socketio.instance().emit('new question', req.session.user.username, data.question);
                       // Send session user's socket to 'Complete'
+
                       sessionSocket.emit('progress', 'Complete', '100%');
                       console.log(results);
                       res.json(parsedTones);
