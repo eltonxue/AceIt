@@ -5,6 +5,7 @@ var fs = require('fs');
 var axios = require('axios');
 var multer = require('multer');
 var upload = multer({ dest: './public/recordings' });
+var socketio = require('../socketio');
 
 var SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
@@ -64,6 +65,9 @@ router.post('/feedback', function(req, res, next) {
 });
 
 router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
+  const sockets = socketio.sockets();
+  const sessionSocket = sockets[req.session.user.id];
+
   const data = req.body;
 
   console.log(req.file);
@@ -90,6 +94,9 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
 
   recognizeStream.setEncoding('utf8'); // to get strings instead of Buffers from `data` events
 
+  // Send session user's socket to 'Converting Audio To Text'
+  sessionSocket.emit('progress', 'Converting Audio To Text', '80%');
+
   let transcript = '';
   ['data', 'error', 'close'].forEach(function(eventName) {
     recognizeStream.on(eventName, function(results) {
@@ -107,6 +114,9 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
         transcript = arr.join(' ');
         console.log('Transcript updated: ' + transcript);
 
+        // Send session user's socket to 'Analyzing Text Tone'
+        sessionSocket.emit('progress', 'Analyzing Text Tone', '90%');
+
         var tone_analyzer = new ToneAnalyzerV3({
           username: '8be17060-7d16-4dde-b8db-2f789916806c',
           password: 'pxQuQ0lbWszM',
@@ -119,6 +129,7 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
             content_type: 'text/plain'
           },
           function(err, results) {
+            // Send session user's socket to 'Saving Data'
             let parsedTones = {
               Anger: 0.05,
               Fear: 0.05,
@@ -156,6 +167,8 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
                       { type: sequelize.QueryTypes.INSERT }
                     )
                     .then(results => {
+                      // Send session user's socket to 'Complete'
+                      sessionSocket.emit('progress', 'Complete', '100%');
                       console.log(results);
                       res.json(parsedTones);
                     })

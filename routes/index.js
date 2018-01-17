@@ -69,14 +69,12 @@ router.get('/history', function(req, res, next) {
 
 router.get('/practice', function(req, res, next) {
   return QuestionBank.findAll({ where: { UserId: req.session.user.id } })
-    .then(banks => res.render('practice', { banks }))
+    .then(banks => res.render('practice', { user: req.session.user, banks }))
     .catch(err => res.send(err));
 });
 
 router.get('/search', function(req, res, next) {
-  return User.findAll({})
-    .then(users => res.render('search-results', { users }))
-    .catch(err => res.send(err));
+  return User.findAll({}).then(users => res.render('search-results', { users })).catch(err => res.send(err));
 });
 
 router.get('/search=:input', function(req, res, next) {

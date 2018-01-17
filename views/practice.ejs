@@ -2,6 +2,14 @@
 <html>
   <head>
     <% include ./header %>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    var socket = io({
+  query: {
+    id: '<%= user.id %>'
+  }
+});
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
   </head>
   <body>

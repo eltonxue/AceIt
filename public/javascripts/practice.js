@@ -197,9 +197,10 @@ let index = 0;
 let timer = $('#timer');
 
 let recordInterval = null;
+let count = 0;
 
 const startTimer = mediaRecorder => {
-  let count = 60;
+  count = 60;
 
   recordInterval = setInterval(function() {
     count -= 1;
@@ -219,17 +220,20 @@ const startTimer = mediaRecorder => {
       $('#instructions').text('Gathering data... (this may take up to 1 minute)');
 
       let progressContainer = $('<div>', { class: 'flex-center' });
-      let progress = $('<div>', { class: 'progress', id: 'current-progress' });
+      let progress = $('<div>', { class: 'progress' });
       let progressBar = $('<div>', {
         class: 'flex-center progress-bar progress-bar-striped progress-bar-animated bg-success',
         role: 'progressbar',
         'aria-valuenow': '75',
         'aria-valuemin': '0',
-        'aria-valuemax': '100'
+        'aria-valuemax': '100',
+        id: 'current-progress'
       });
 
       progress.append(progressBar);
       progressContainer.append(progress);
+
+      progressBar.css('width', '0');
 
       // $('#stop').replaceWith(progress);
 
@@ -362,7 +366,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         mediaRecorder.stop();
         $('#instructions').text('Gathering data... (this may take up to 1 minute)');
         let progressContainer = $('<div>', { class: 'flex-center' });
-        let progress = $('<div>', { class: 'progress', id: 'current-progress' });
+        let progress = $('<div>', { class: 'progress' });
         let progressBar = $('<div>', {
           id: 'current-progress',
           class: 'flex-center progress-bar progress-bar-striped progress-bar-animated bg-success',
@@ -371,18 +375,17 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           'aria-valuemin': '0',
           'aria-valuemax': '100'
         });
-        progressBar.text('Updating To Audio File');
-        progressBar.css('width', '0');
 
         progress.append(progressBar);
         progressContainer.append(progress);
+
+        // progressBar.animate({ width: '25%' }, 1000);
+        progressBar.css('width', '0');
 
         // $('#stop').replaceWith(progress);
 
         $('#record-response-container').append(progressContainer);
         $('#control-buttons').remove();
-
-        progressBar.animate({ width: '35%' }, 1000);
       });
     })
     // Error callback
@@ -405,4 +408,16 @@ mainContainer.on('click', '#next', function(e) {
     console.log('next');
     createTimer(Questions[index]);
   }
+});
+
+socket.on('progress', (message, width) => {
+  console.log('---PROGRESS CALLED---');
+  console.log(`MESSAGE: ${message}`);
+  console.log(`Width: ${width}`);
+
+  let progressBar = $('#current-progress');
+  let secondsElapsed = 60 - count;
+  let duration = secondsElapsed < 5 ? secondsElapsed * 1000 : secondsElapsed * 1000 - 2000;
+  progressBar.text(message);
+  progressBar.animate({ width: width }, duration);
 });
