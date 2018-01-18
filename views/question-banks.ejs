@@ -31,7 +31,7 @@
                   <% for (let j = 0; j < banks[i].questions.length; ++j) { %>
                     <li class="list-group-item"><%= banks[i].questions[j] %><span class="fa fa-close ml-auto"></span></li>
                   <% } %>
-                  <input class="list-group-item list-group-item-info mt-2" onKeyPress="onAdd(event, this)"></input>
+                  <input class="list-group-item list-group-item-info mt-2" onKeyPress="onAdd(event, this)" maxlength="250"></input>
                   <div class="btn btn-2 mt-2 add-question">Add Question</div>
                   <span class="last-updated">Last Updated: <%= 1 + banks[i].updatedAt.getMonth() %>/<%= banks[i].updatedAt.getDate() %>/<%= banks[i].updatedAt.getFullYear() %> @<%= banks[i].updatedAt.getHours() < 10 ? `0${String(banks[i].updatedAt.getHours())}` : banks[i].updatedAt.getHours() %>:<%= banks[i].updatedAt.getMinutes() < 10 ? `0${String(banks[i].updatedAt.getMinutes())}` : banks[i].updatedAt.getMinutes() %>:<%= banks[i].updatedAt.getSeconds() < 10 ? `0${String(banks[i].updatedAt.getSeconds())}` : banks[i].updatedAt.getSeconds() %></span>
                 </ul>

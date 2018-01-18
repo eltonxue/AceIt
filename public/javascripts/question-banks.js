@@ -91,9 +91,10 @@ const createQuestionBank = (bankId, bankTitle, bankQuestions, date) => {
   });
 
   let questionInput = $('<input>', {
-    class: 'list-group-item list-group-item-info mt-2'
+    class: 'list-group-item list-group-item-info mt-2',
+    maxlength: '250',
+    onKeyPress: 'onAdd(event, this)'
   });
-  questionInput.attr('onKeyPress', 'onAdd(event, this)');
   let add = $('<div>', { class: 'btn btn-2 mt-2 add-question' });
   add.text('Add Question');
 
