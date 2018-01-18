@@ -20,14 +20,14 @@ Web application for helping students practice interviewing. Main features includ
   ```
 8. Create your username and password by running the command:
   ```
-  CREATE USER postgres WITH PASSWORD 'password';
+  CREATE USER "aceit-postgres" WITH PASSWORD "password";
   ```
 9. Grant privileges to databases by running these commands:
   ```
-  GRANT ALL PRIVILEGES ON DATABASE "aceit-devs" to postgres;
+  GRANT ALL PRIVILEGES ON DATABASE "aceit-devs" to "aceit-postgres";
   ```
   ```
-  GRANT ALL PRIVILEGES ON DATABASE "test-aceit-devs" to postgres;
+  GRANT ALL PRIVILEGES ON DATABASE "test-aceit-devs" to "aceit-postgres";
   ```
 10. Back in the projects directory, run these commands to launch Sequelize migrations:
   ```
