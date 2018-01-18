@@ -20,7 +20,7 @@ Web application for helping students practice interviewing. Main features includ
   ```
 8. Create your username and password by running the command:
   ```
-  CREATE USER "aceit-postgres" WITH PASSWORD "password";
+  CREATE USER "aceit-postgres" WITH PASSWORD 'password';
   ```
 9. Grant privileges to databases by running these commands:
   ```
