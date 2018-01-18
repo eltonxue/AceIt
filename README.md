@@ -18,19 +18,30 @@ Web application for helping students practice interviewing. Main features includ
   ```
   CREATE DATABASE "test-aceit-devs";
   ```
-7. Back in the projects directory, run these commands to launch Sequelize migrations:
+8. Create your username and password by running the command:
+  ```
+  CREATE USER postgres WITH PASSWORD 'password';
+  ```
+9. Grant privileges to databases by running these commands:
+  ```
+  GRANT ALL PRIVILEGES ON DATABASE "aceit-devs" to postgres;
+  ```
+  ```
+  GRANT ALL PRIVILEGES ON DATABASE "test-aceit-devs" to postgres;
+  ```
+10. Back in the projects directory, run these commands to launch Sequelize migrations:
   ```
   sequelize db:migrate
   ```
   ```
   NODE_ENV=test sequelize db:migrate
   ```
-8. Then, launch the website by running this command:
+11. Then, launch the website by running this command:
   ```
   npm start
   ```
-9. In your web browser, navigate to http://localhost:3000 to see the web application's home page
-10. After creating and starting the "test-aceit-devs" database, run this command to begin Mocha testing:
+12. In your web browser, navigate to http://localhost:3000 to see the web application's home page
+13. After creating and starting the "test-aceit-devs" database, run this command to begin Mocha testing:
   ```
   npm test
   ```
