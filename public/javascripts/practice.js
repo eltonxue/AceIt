@@ -45,8 +45,6 @@ const createRedirects = () => {
 };
 
 const createFeedback = (questionText, article, tones) => {
-  console.log(tones);
-
   // Create feedback
 
   let feedbackContainer = $('<div>', {
@@ -209,14 +207,11 @@ const startTimer = mediaRecorder => {
       seconds = `0${seconds}`;
     }
     $('#timer').text(`00:${seconds}`);
-    console.log(count);
     if (count === 0) {
       clearInterval(recordInterval);
 
       // Stop media recording
       mediaRecorder.stop();
-      console.log(mediaRecorder.state);
-      console.log('Recording has stopped.');
       $('#instructions').text('Gathering data... (this may take up to 1 minute)');
 
       let progressContainer = $('<div>', { class: 'flex-center' });
@@ -246,11 +241,10 @@ const startTimer = mediaRecorder => {
 // Chooses a question bank ( on click )
 $('.question-bank-card').click(function(e) {
   const bankId = $(this).data('id');
-
+  clearPleaseTryAgain();
   axios
     .get(`/users/bank=${bankId}`)
     .then(response => {
-      console.log(response);
       // Shuffle bank's questions
       Questions = response.data.questions;
 
@@ -260,18 +254,16 @@ $('.question-bank-card').click(function(e) {
         const negative = Math.random() * -1;
         return positive + negative;
       });
-      console.log(Questions);
       $('#content-title').html("Record Your Response <span class='fa fa-battery-2'></span>");
       index = 0;
       createTimer(Questions[index]);
     })
-    .catch(err => console.log(err));
+    .catch(err => pleaseTryAgain());
 });
 
 // HANDLE RECORDING with getUserMedia
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  console.log('getUserMedia supported.');
   navigator.mediaDevices
     .getUserMedia(
       // constraints - only audio needed for this app
@@ -295,13 +287,12 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         let questionText = Questions[index];
 
         // Create dummy feedback to get UserId + ID
+        clearPleaseTryAgain();
         axios
           .post('/action/feedback', {
             question: questionText
           })
           .then(response => {
-            console.log(response);
-
             let blob = new Blob(chunks, { type: 'audio/wav' });
 
             chunks = [];
@@ -326,6 +317,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             data.append('name', clipName);
             data.append('question', questionText);
 
+            clearPleaseTryAgain();
             axios
               .patch('/action/feedback/api', data)
               .then(response => {
@@ -333,13 +325,9 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
                 $('#record-response-container').remove();
               })
-              .catch(err => console.log(err));
+              .catch(err => pleaseTryAgain());
           })
-          .catch(err => console.log(err));
-
-        // Stop media recording
-        console.log(mediaRecorder.state);
-        console.log('Recording has stopped.');
+          .catch(err => pleaseTryAgain());
       };
 
       // Start Timer (change to event delegation)
@@ -356,8 +344,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Starts media recording
         mediaRecorder.start();
         $('#instructions').text('Recording...');
-        console.log(mediaRecorder.state);
-        console.log('Recording audio...');
       });
 
       // Stop Timer (change to event delegation)
@@ -401,20 +387,13 @@ mainContainer.on('click', '#next', function(e) {
   $('#feedback-container').remove();
   index++;
   if (index >= Questions.length) {
-    console.log('Went through all the questions');
-
     createRedirects();
   } else {
-    console.log('next');
     createTimer(Questions[index]);
   }
 });
 
 socket.on('progress', (message, width) => {
-  console.log('---PROGRESS CALLED---');
-  console.log(`MESSAGE: ${message}`);
-  console.log(`Width: ${width}`);
-
   let progressBar = $('#current-progress');
   let secondsElapsed = 60 - count;
   let duration = secondsElapsed < 5 ? secondsElapsed * 1000 : secondsElapsed * 1000 - 2000;

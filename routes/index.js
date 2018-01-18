@@ -7,9 +7,7 @@ var Op = sequelize.Op;
 
 const db = require('../database/models/index');
 
-const User = db.User;
-const QuestionBank = db.QuestionBank;
-const Question = db.Question;
+const { User, QuestionBank, Question } = db;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -19,7 +17,6 @@ router.get('/', function(req, res, next) {
       let questions = results[0];
       questions.reverse();
       questions = questions.slice(0, 3);
-      console.log(questions);
       res.render('index', { user: req.session.user, questions });
     })
     .catch(err => res.send(err));

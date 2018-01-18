@@ -6,10 +6,6 @@ $('#learn-more').click(function(event) {
 var socket;
 if (socket) {
   socket.on('new question', (username, question) => {
-    console.log('---QUESTION---');
-    console.log(username);
-    console.log(question);
-
     let popularQuestions = $('#popular-questions');
     let card = $('<li>', { class: 'question-card flex-center row' });
     let usernameText = $(

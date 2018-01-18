@@ -6,8 +6,6 @@ module.exports = {
     io.on('connection', function(socket) {
       let userId = socket.handshake.query.id;
       sockets[userId] = socket;
-      console.log('a user connected');
-      console.log(sockets);
     });
   },
   instance: function() {

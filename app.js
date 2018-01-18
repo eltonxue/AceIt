@@ -61,7 +61,7 @@ app.use('/auth', auth);
 app.use('/', index);
 app.use('/users', users);
 app.use('/action', action);
-// Redirects to index page if does not fit any preassigned routes
+// Redirects to index page if does not fit any preassigned routes while logged in
 app.use('/', redirect);
 
 // catch 404 and forward to error handler

@@ -1,6 +1,4 @@
 axios.get('/users/history').then(history => {
-  console.log(history);
-
   const historyContainer = $('#history-container');
   const allFeedbacks = history.data;
   allFeedbacks.reverse();
@@ -9,7 +7,6 @@ axios.get('/users/history').then(history => {
     let blob = new Blob([new Uint8Array(feedback.audio.data)], {
       type: 'audio/wav'
     });
-    console.log(blob);
 
     let card = $('<div>', { class: 'feedback-card' });
 
@@ -65,21 +62,11 @@ axios.get('/users/history').then(history => {
 
     // Build chart
     Chart.defaults.global.defaultFontColor = 'white';
-    var ctx = document
-      .getElementById(`feedback-chart-${feedback.id}`)
-      .getContext('2d');
+    var ctx = document.getElementById(`feedback-chart-${feedback.id}`).getContext('2d');
     var myChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: [
-          'Anger',
-          'Fear',
-          'Joy',
-          'Sadness',
-          'Analytical',
-          'Confident',
-          'Tentative'
-        ],
+        labels: ['Anger', 'Fear', 'Joy', 'Sadness', 'Analytical', 'Confident', 'Tentative'],
         datasets: [
           {
             label: 'Feedback',
@@ -138,8 +125,6 @@ $('#clear').click(() => {
   $('#history-container').empty();
 
   // AJAX call to delete all Feedbacks
-  axios
-    .delete('/action/feedback/clear')
-    .then(response => console.log(response))
-    .catch(err => console.log(err));
+  clearPleaseTryAgain();
+  axios.delete('/action/feedback/clear').catch(err => pleaseTryAgain());
 });

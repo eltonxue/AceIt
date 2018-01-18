@@ -16,7 +16,6 @@ describe('Users', function() {
   // Before each test, run this
   beforeEach(function(done) {
     // Clear all databases
-    console.log('---Before Each Test Run---');
     QuestionBank.destroy({ where: {} })
       .then(() => {
         Feedback.destroy({ where: {} })
@@ -32,68 +31,70 @@ describe('Users', function() {
                 // Creates a session user and then logs them in using chaiHttp's 'agent' feature
                 User.create(userData, {
                   include: [{ model: QuestionBank, as: 'QuestionBanks' }, { model: Feedback, as: 'Feedbacks' }]
-                }).then(user => {
-                  agent
-                    .post('/auth/login')
-                    .send({ username: user.username, password: user.password })
-                    .end((err, res) => {
-                      if (err) throw err;
+                })
+                  .then(user => {
+                    agent
+                      .post('/auth/login')
+                      .send({ username: user.username, password: user.password })
+                      .end((err, res) => {
+                        if (err) throw err;
 
-                      // Create a feedback for session user
-                      const feedbackData = {
-                        UserId: user.id,
-                        path: '../test.flac',
-                        question: 'How well do you work in a team?',
-                        anger: 0.33,
-                        fear: 0.05,
-                        joy: 0.88,
-                        sadness: 0.99,
-                        analytical: 0.05,
-                        tentative: 0.12,
-                        id: 1
-                      };
+                        // Create a feedback for session user
+                        const feedbackData = {
+                          UserId: user.id,
+                          path: '../test.flac',
+                          question: 'How well do you work in a team?',
+                          anger: 0.33,
+                          fear: 0.05,
+                          joy: 0.88,
+                          sadness: 0.99,
+                          analytical: 0.05,
+                          tentative: 0.12,
+                          id: 1
+                        };
 
-                      // Create 3 question banks for session user
-                      const bankData = {
-                        UserId: user.id,
-                        title: 'Team Questions',
-                        questions: ['Are you a leader?', 'Are you a follower?', 'How well do you work in a team?'],
-                        id: 1
-                      };
+                        // Create 3 question banks for session user
+                        const bankData = {
+                          UserId: user.id,
+                          title: 'Team Questions',
+                          questions: ['Are you a leader?', 'Are you a follower?', 'How well do you work in a team?'],
+                          id: 1
+                        };
 
-                      const bankData2 = {
-                        UserId: user.id,
-                        title: 'Technical Questions',
-                        questions: ['Which project on your resume are you most proud of?'],
-                        id: 2
-                      };
+                        const bankData2 = {
+                          UserId: user.id,
+                          title: 'Technical Questions',
+                          questions: ['Which project on your resume are you most proud of?'],
+                          id: 2
+                        };
 
-                      const bankData3 = {
-                        UserId: user.id,
-                        title: 'Behavioral Questions',
-                        questions: ['Tell me about yourself.', 'Why do you want to work for us?'],
-                        id: 3
-                      };
+                        const bankData3 = {
+                          UserId: user.id,
+                          title: 'Behavioral Questions',
+                          questions: ['Tell me about yourself.', 'Why do you want to work for us?'],
+                          id: 3
+                        };
 
-                      Feedback.create(feedbackData)
-                        .then(() => {
-                          QuestionBank.create(bankData)
-                            .then(() => {
-                              QuestionBank.create(bankData2)
-                                .then(() => {
-                                  QuestionBank.create(bankData3)
-                                    .then(() => {
-                                      done();
-                                    })
-                                    .catch(err => console.log(err));
-                                })
-                                .catch(err => console.log(err));
-                            })
-                            .catch(err => console.log(err));
-                        })
-                        .catch(err => console.log(err));
-                    });
-                });
+                        Feedback.create(feedbackData)
+                          .then(() => {
+                            QuestionBank.create(bankData)
+                              .then(() => {
+                                QuestionBank.create(bankData2)
+                                  .then(() => {
+                                    QuestionBank.create(bankData3)
+                                      .then(() => {
+                                        done();
+                                      })
+                                      .catch(err => console.log(err));
+                                  })
+                                  .catch(err => console.log(err));
+                              })
+                              .catch(err => console.log(err));
+                          })
+                          .catch(err => console.log(err));
+                      });
+                  })
+                  .catch(err => console.log(err));
               })
               .catch(err => console.log(err));
           })
@@ -104,7 +105,6 @@ describe('Users', function() {
 
   // After each test, clear the User database
   afterEach(function(done) {
-    console.log('---After Each Test Run---');
     QuestionBank.destroy({ where: {} })
       .then(() => {
         Feedback.destroy({ where: {} })

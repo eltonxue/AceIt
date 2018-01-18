@@ -4,6 +4,7 @@ const questionBanks = $('#main-container');
 // Search question banks
 const onSearch = (event, scope) => {
   let searchInput = $('#search-banks').val().trim();
+  clearPleaseTryAgain();
   if (searchInput) {
     axios
       .get(`/users/banks/search=${searchInput}`)
@@ -12,15 +13,10 @@ const onSearch = (event, scope) => {
         const banks = response.data;
         questionBanks.empty();
         banks.forEach(bank => {
-          createQuestionBank(
-            bank.id,
-            bank.title,
-            bank.questions,
-            bank.updatedAt
-          );
+          createQuestionBank(bank.id, bank.title, bank.questions, bank.updatedAt);
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => pleaseTryAgain());
   } else {
     axios
       .get('/users/banks')
@@ -29,15 +25,10 @@ const onSearch = (event, scope) => {
         const banks = response.data;
         questionBanks.empty();
         banks.forEach(bank => {
-          createQuestionBank(
-            bank.id,
-            bank.title,
-            bank.questions,
-            bank.updatedAt
-          );
+          createQuestionBank(bank.id, bank.title, bank.questions, bank.updatedAt);
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => pleaseTryAgain());
   }
 };
 
@@ -115,9 +106,7 @@ const createQuestionBank = (bankId, bankTitle, bankQuestions, date) => {
     return next;
   });
 
-  update.text(
-    `Last Updated: ${d[0]}/${d[1]}/${d[2]} @ ${t[0]}:${t[1]}:${t[2]}`
-  );
+  update.text(`Last Updated: ${d[0]}/${d[1]}/${d[2]} @ ${t[0]}:${t[1]}:${t[2]}`);
 
   questions.append(questionInput);
   questions.append(add);
@@ -147,37 +136,34 @@ const createQuestion = scope => {
     updateTime(update);
 
     const bankId = scope.parent().parent().data('id');
-
-    axios
-      .patch('/action/bank/add-question', { bankId, question: text })
-      .then(response => console.log(response))
-      .catch(err => console.log(err));
+    clearPleaseTryAgain();
+    axios.patch('/action/bank/add-question', { bankId, question: text }).catch(err => pleaseTryAgain());
   }
 };
 
 // Add new question bank
 addBank.click(() => {
+  clearPleaseTryAgain();
   axios
     .post('/action/bank', { title: 'New Bank', questions: [] })
     .then(response => {
-      console.log(response);
       const bank = response.data;
       createQuestionBank(bank.id, bank.title, bank.questions, bank.updatedAt);
     })
-    .catch(err => console.log(err));
+    .catch(err => pleaseTryAgain());
 });
 
 // Remove question bank
 questionBanks.on('click', '.remove-question-bank', function(event) {
   let card = $(this).parent().parent();
   let bankId = card.data('id');
+  clearPleaseTryAgain();
   axios
     .delete('/action/bank', { params: { bankId } })
     .then(response => {
-      console.log(response);
       card.remove();
     })
-    .catch(err => console.log(err));
+    .catch(err => pleaseTryAgain());
 });
 
 // Edit title
@@ -193,8 +179,6 @@ questionBanks.on('click', 'h1', function(event) {
   card.click(function() {
     let value = title.val().trim();
     if (value) {
-      console.log(value);
-      console.log(title);
       let newTitle = $('<h1>', { class: 'title' });
       newTitle.text(value);
       title.replaceWith(newTitle);
@@ -206,13 +190,13 @@ questionBanks.on('click', 'h1', function(event) {
       updateTime(update);
 
       const bankId = card.data('id');
+      clearPleaseTryAgain();
       axios
         .patch('/action/bank/update-title', {
           bankId,
           newTitle: value
         })
-        .then(response => console.log(response))
-        .catch(err => console.log(err));
+        .catch(err => pleaseTryAgain());
     }
   });
 
@@ -228,14 +212,13 @@ questionBanks.on('click', '.fa-close', function(event) {
   let update = questionElement.parent().children().last();
 
   updateTime(update);
-
+  clearPleaseTryAgain();
   axios
     .patch('/action/bank/remove-question', { bankId, question })
     .then(response => {
-      console.log(response);
       questionElement.remove();
     })
-    .catch(err => console.log(err));
+    .catch(err => pleaseTryAgain());
 });
 
 // Add question

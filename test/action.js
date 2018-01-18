@@ -28,7 +28,6 @@ describe('Users', function() {
           .then(() => {
             User.destroy({ where: {} })
               .then(() => {
-                console.log('---Before Each Test Run---');
                 const userData = {
                   username: 'soniaxu',
                   password: '123456789',
@@ -58,7 +57,7 @@ describe('Users', function() {
                           sadness: 0.99,
                           analytical: 0.05,
                           tentative: 0.12,
-                          id: 1
+                          id: 1000
                         };
 
                         // Create 3 question banks for session user
@@ -66,28 +65,22 @@ describe('Users', function() {
                           UserId: user.id,
                           title: 'Team Questions',
                           questions: ['Are you a leader?', 'Are you a follower?', 'How well do you work in a team?'],
-                          id: 1
+                          id: 1000
                         };
 
                         const bankData2 = {
                           UserId: user.id,
                           title: 'Technical Questions',
                           questions: ['Which project on your resume are you most proud of?'],
-                          id: 2
+                          id: 2000
                         };
 
                         const bankData3 = {
                           UserId: user.id,
                           title: 'Behavioral Questions',
                           questions: ['Tell me about yourself.', 'Why do you want to work for us?'],
-                          id: 3
+                          id: 3000
                         };
-
-                        // console.log(user);
-                        //
-                        // User.findAll({}).then(results => console.log(results));
-                        // Feedback.findAll({}).then(results => console.log(results));
-                        // QuestionBank.findAll({}).then(results => console.log(results));
 
                         Feedback.create(feedbackData)
                           .then(() => {
@@ -119,7 +112,6 @@ describe('Users', function() {
 
   // After each test, clear the User database
   afterEach(function(done) {
-    console.log('---After Each Test Run---');
     QuestionBank.destroy({ where: {} })
       .then(() => {
         Feedback.destroy({ where: {} })
@@ -280,7 +272,7 @@ describe('Users', function() {
       const feedback = res.body[0][0];
 
       feedback.UserId.should.equal(1);
-      feedback.id.should.equal(1);
+      feedback.id.should.equal(1000);
       feedback.path.should.equal('./test.flac');
       feedback.question.should.equal('How well do you work in a team?');
       feedback.anger.should.equal(0.33);
@@ -321,7 +313,7 @@ describe('Users', function() {
   });
 
   it('Should successfully DELETE and return removed QuestionBank instance', function(done) {
-    agent.delete('/action/bank?bankId=1').end(function(err, res) {
+    agent.delete('/action/bank?bankId=1000').end(function(err, res) {
       res.should.have.status(200);
       res.should.be.json;
       res.body.should.be.a('object');
@@ -335,7 +327,7 @@ describe('Users', function() {
   it('Should successfully PATCH and return updated QuestionBank instance w/ updated title', function(done) {
     agent
       .patch('/action/bank/update-title')
-      .send({ bankId: 1, newTitle: 'Updated Team Questions' })
+      .send({ bankId: 1000, newTitle: 'Updated Team Questions' })
       .end(function(err, res) {
         res.should.have.status(200);
         res.should.be.json;
@@ -349,7 +341,7 @@ describe('Users', function() {
         bank.should.have.property('updatedAt');
         bank.should.have.property('UserId');
         bank.UserId.should.equal(1);
-        bank.id.should.equal(1);
+        bank.id.should.equal(1000);
         bank.title.should.equal('Updated Team Questions');
         bank.questions[0].should.equal('Are you a leader?');
         bank.questions[1].should.equal('Are you a follower?');
@@ -364,7 +356,7 @@ describe('Users', function() {
     agent
       .patch('/action/bank/add-question')
       .send({
-        bankId: 1,
+        bankId: 1000,
         question: 'Tell me about a time where you had to deal with confrontation from a team member.'
       })
       .end(function(err, res) {
@@ -380,7 +372,7 @@ describe('Users', function() {
         bank.should.have.property('updatedAt');
         bank.should.have.property('UserId');
         bank.UserId.should.equal(1);
-        bank.id.should.equal(1);
+        bank.id.should.equal(1000);
         bank.title.should.equal('Team Questions');
         bank.questions[0].should.equal('Are you a leader?');
         bank.questions[1].should.equal('Are you a follower?');
@@ -397,7 +389,7 @@ describe('Users', function() {
   it('Should successfully PATCH and return updated QuestionBank instance w/ removed question', function(done) {
     agent
       .patch('/action/bank/remove-question')
-      .send({ bankId: 1, question: 'Are you a leader?' })
+      .send({ bankId: 1000, question: 'Are you a leader?' })
       .end(function(err, res) {
         res.should.have.status(200);
         res.should.be.json;
@@ -411,7 +403,7 @@ describe('Users', function() {
         bank.should.have.property('updatedAt');
         bank.should.have.property('UserId');
         bank.UserId.should.equal(1);
-        bank.id.should.equal(1);
+        bank.id.should.equal(1000);
         bank.title.should.equal('Team Questions');
         bank.questions[0].should.equal('Are you a follower?');
         bank.questions[1].should.equal('How well do you work in a team?');

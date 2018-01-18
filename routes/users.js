@@ -30,11 +30,9 @@ router.get('/history', function(req, res, next) {
           return feedback;
         }
       });
-      console.log('-----UPDATED HISTORY-----');
-      console.log(results);
       res.json(results);
     })
-    .catch(err => console.log(err));
+    .catch(err => res.send(err));
 });
 
 // Get session user's question banks
@@ -58,7 +56,6 @@ router.get('/banks', function(req, res, next) {
 router.get('/banks/search=:input', function(req, res, next) {
   let { input } = req.params;
   input = input.toLowerCase();
-  console.log(input);
 
   QuestionBank.findAll({
     where: { UserId: req.session.user.id, title: { [Op.iLike]: `%${input}%` } }

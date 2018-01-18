@@ -12,15 +12,11 @@ var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 
 const db = require('../database/models/index');
 
-const User = db.User;
-const QuestionBank = db.QuestionBank;
-const Feedback = db.Feedback;
-const Question = db.Question;
+const { User, QuestionBank, Feedback, Question } = db;
 
 // Update password
 router.patch('/update-password', function(req, res, next) {
   const data = req.body;
-  console.log(req.session.user);
   if (data.newPassword.length <= 6 || data.confirmNewPassword.length <= 6) {
     return res.send({
       type: 'new-password',
@@ -58,9 +54,7 @@ router.post('/feedback', function(req, res, next) {
         .id}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *`,
       { type: sequelize.QueryTypes.INSERT }
     )
-    .then(results => {
-      res.send(results[0][0]);
-    })
+    .then(results => res.send(results[0][0]))
     .catch(err => res.send(err));
 });
 
@@ -69,9 +63,6 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
   const sessionSocket = sockets[req.session.user.id];
 
   const data = req.body;
-
-  console.log(req.file);
-  console.log(data);
 
   const filePath = `${__dirname}/../public/recordings/${data.name}.flac`;
 
@@ -104,15 +95,13 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
         transcript += results;
       } else if (eventName === 'close') {
         // READ FROM TRANSCRIPT FILE
-        console.log('Transcript: ' + transcript);
         let arr = transcript.split(' ');
         arr = arr.map((current, i) => {
-          // Average sentence length = 10, 14
+          // Average sentence length = 7, 10, 14
           return i % 7 === 0 && i !== 0 ? `${current}.` : current;
         });
 
         transcript = arr.join(' ');
-        console.log('Transcript updated: ' + transcript);
 
         // Send session user's socket to 'Analyzing Text Tone'
         sessionSocket.emit('progress', 'Analyzing Text Tone', '90%');
@@ -129,7 +118,6 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
             content_type: 'text/plain'
           },
           function(err, results) {
-            // Send session user's socket to 'Saving Data'
             let parsedTones = {
               Anger: 0.05,
               Fear: 0.05,
@@ -143,7 +131,6 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
               // Send default
               return res.send(parsedTones);
             } else {
-              console.log('Results: ' + JSON.stringify(results));
               let tones = results.document_tone.tones;
 
               tones.forEach(function(tone) {
@@ -158,8 +145,6 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
                   { type: sequelize.QueryTypes.UPDATE }
                 )
                 .then(feedback => {
-                  console.log(feedback);
-
                   db.sequelize
                     .query(
                       `INSERT INTO "Questions"("username", "question", "createdAt", "updatedAt") VALUES ('${req.session
@@ -170,14 +155,12 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
                       // Send all sockets updated question
                       socketio.instance().emit('new question', req.session.user.username, data.question);
                       // Send session user's socket to 'Complete'
-
                       sessionSocket.emit('progress', 'Complete', '100%');
-                      console.log(results);
                       res.json(parsedTones);
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => res.send(err));
                 })
-                .catch(err => console.log(err));
+                .catch(err => res.send(err));
             }
           }
         );
@@ -208,8 +191,7 @@ router.post('/bank', function(req, res, next) {
 
 // Delete Question Bank w/ bank id
 router.delete('/bank', function(req, res, next) {
-  const bankId = req.query.bankId;
-  console.log(bankId);
+  const { bankId } = req.query;
 
   return QuestionBank.destroy({ where: { id: bankId } })
     .then(results => res.send({ numberDeleted: results }))

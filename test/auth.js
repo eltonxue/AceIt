@@ -2,7 +2,7 @@ const test = require('./test.js');
 const { chai, server, agent, should } = test;
 
 const db = require('../database/models/index');
-const { User, QuestionBank, Feedback, Question } = db;
+const { User } = db;
 
 /*
 Test 'auth' route
@@ -13,7 +13,6 @@ Test 'auth' route
 describe('Auth', function() {
   beforeEach(function(done) {
     // Clear all databases
-    console.log('---Before Each Test Run---');
     User.destroy({ where: {} })
       .then(() => {
         const userData = {
@@ -33,7 +32,6 @@ describe('Auth', function() {
 
   // After each test, clear the User database
   afterEach(function(done) {
-    console.log('---After Each Test Run---');
     // Clear all database
     User.destroy({ where: {} })
       .then(() => {

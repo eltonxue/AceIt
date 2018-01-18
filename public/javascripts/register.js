@@ -10,6 +10,7 @@ $('#register').submit(function(e) {
 
   // Registration
   if ($('.error').length === 0) {
+    clearPleaseTryAgain();
     axios
       .post('/auth/register', {
         username: $('#username').val().trim(),
@@ -18,7 +19,6 @@ $('#register').submit(function(e) {
         confirmPassword: $('#confirm-password').val()
       })
       .then(function(response) {
-        console.log(response);
         const { data } = response;
         if (!data.error) {
           axios
@@ -43,7 +43,7 @@ $('#register').submit(function(e) {
         }
       })
       .catch(function(err) {
-        console.log(err);
+        pleaseTryAgain();
       });
   }
 });

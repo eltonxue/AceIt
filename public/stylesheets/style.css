@@ -226,7 +226,7 @@ input {
   font-size: 22px; }
 
 .error {
-  color: #d43326; }
+  color: #d43326 !important; }
 
 .success {
   color: #66bb75; }

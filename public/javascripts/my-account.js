@@ -16,6 +16,7 @@ $('#update-account').submit(function(e) {
     const oldPassword = $('#old-password').val();
     const newPassword = $('#new-password').val();
     const confirmNewPassword = $('#confirm-new-password').val();
+    clearPleaseTryAgain();
     axios
       .patch('/action/update-password', {
         oldPassword,
@@ -26,7 +27,6 @@ $('#update-account').submit(function(e) {
         const { data } = response;
         if (!data.error) {
           // Password update successful
-          console.log(data);
           let successMessage = $('<label>', { class: 'success' });
           successMessage.text('Update successful');
           $('#update-account').append(successMessage);
@@ -43,7 +43,7 @@ $('#update-account').submit(function(e) {
           }
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => pleaseTryAgain());
   }
 });
 
