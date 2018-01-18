@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
       questions = questions.slice(0, 3);
       res.render('index', { user: req.session.user, questions });
     })
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Gets registration page
@@ -48,16 +48,16 @@ router.get('/username=:username', function(req, res, next) {
             banks
           })
         )
-        .catch(err => res.send(err));
+        .catch(err => res.status(400).send(err));
     })
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
   // Redirect to user's page
 });
 
 router.get('/question-banks', function(req, res, next) {
   QuestionBank.findAll({ where: { UserId: req.session.user.id } })
     .then(banks => res.render('question-banks', { banks }))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 router.get('/history', function(req, res, next) {
@@ -67,11 +67,13 @@ router.get('/history', function(req, res, next) {
 router.get('/practice', function(req, res, next) {
   return QuestionBank.findAll({ where: { UserId: req.session.user.id } })
     .then(banks => res.render('practice', { user: req.session.user, banks }))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 router.get('/search', function(req, res, next) {
-  return User.findAll({}).then(users => res.render('search-results', { users })).catch(err => res.send(err));
+  return User.findAll({})
+    .then(users => res.render('search-results', { users }))
+    .catch(err => res.status(400).send(err));
 });
 
 router.get('/search=:input', function(req, res, next) {
@@ -82,7 +84,7 @@ router.get('/search=:input', function(req, res, next) {
     where: { username: { [Op.iLike]: `%${input}%` } }
   })
     .then(users => res.render('search-results', { users }))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 router.get('/my-account', function(req, res, next) {

@@ -61,13 +61,13 @@ router.post('/register', function(req, res, next) {
                   include: [{ model: QuestionBank, as: 'QuestionBanks' }, { model: Feedback, as: 'Feedbacks' }]
                 })
                   .then(user => res.send(user))
-                  .catch(err => res.send(err));
+                  .catch(err => res.status(400).send(err));
               }
             })
-            .catch(err => res.send(err));
+            .catch(err => res.status(400).send(err));
         }
       })
-      .catch(err => res.send(err));
+      .catch(err => res.status(400).send(err));
   }
 });
 

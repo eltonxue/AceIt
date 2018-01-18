@@ -40,7 +40,7 @@ router.patch('/update-password', function(req, res, next) {
         req.session.user.password = data.newPassword;
         return res.send(results[1].dataValues);
       })
-      .catch(err => res.send(err));
+      .catch(err => res.status(400).send(err));
   }
 });
 
@@ -55,7 +55,7 @@ router.post('/feedback', function(req, res, next) {
       { type: sequelize.QueryTypes.INSERT }
     )
     .then(results => res.send(results[0][0]))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
@@ -158,9 +158,9 @@ router.patch('/feedback/api', upload.single('blob'), function(req, res, next) {
                       sessionSocket.emit('progress', 'Complete', '100%');
                       res.json(parsedTones);
                     })
-                    .catch(err => res.send(err));
+                    .catch(err => res.status(400).send(err));
                 })
-                .catch(err => res.send(err));
+                .catch(err => res.status(400).send(err));
             }
           }
         );
@@ -174,7 +174,7 @@ router.delete('/feedback/clear', function(req, res, next) {
   db.sequelize
     .query(`DELETE FROM "Feedbacks" WHERE "UserId" = ${req.session.user.id} RETURNING *`)
     .then(feedbacks => res.send(feedbacks))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Add new Question Bank
@@ -186,7 +186,7 @@ router.post('/bank', function(req, res, next) {
     questions: data.questions
   })
     .then(bank => res.send(bank))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Delete Question Bank w/ bank id
@@ -195,7 +195,7 @@ router.delete('/bank', function(req, res, next) {
 
   return QuestionBank.destroy({ where: { id: bankId } })
     .then(results => res.send({ numberDeleted: results }))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Update question bank title w/ bank id
@@ -204,7 +204,7 @@ router.patch('/bank/update-title', function(req, res, next) {
   const { bankId, newTitle } = data;
   return QuestionBank.update({ title: newTitle }, { where: { id: bankId }, returning: true, plain: true })
     .then(results => res.send(results[1].dataValues))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Add question to question bank w/ bank id
@@ -219,7 +219,7 @@ router.patch('/bank/add-question', function(req, res, next) {
     { where: { id: bankId }, returning: true, plain: true }
   )
     .then(results => res.send(results[1].dataValues))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Remove question from question bank w/ bank id
@@ -233,9 +233,9 @@ router.patch('/bank/remove-question', function(req, res, next) {
       questions.splice(questions.indexOf(question), 1);
       QuestionBank.update({ questions }, { where: { id: bankId }, returning: true, plain: true })
         .then(results => res.send(results[1].dataValues))
-        .catch(err => res.send(err));
+        .catch(err => res.status(400).send(err));
     })
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 module.exports = router;

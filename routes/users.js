@@ -32,7 +32,7 @@ router.get('/history', function(req, res, next) {
       });
       res.json(results);
     })
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Get session user's question banks
@@ -42,14 +42,14 @@ router.get('/bank=:bankId', function(req, res, next) {
     where: { id: bankId }
   })
     .then(bank => res.send(bank))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Get session user's question banks
 router.get('/banks', function(req, res, next) {
   return QuestionBank.findAll({ where: { UserId: req.session.user.id } })
     .then(banks => res.send(banks))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 // Get session user's question banks based on input
@@ -61,7 +61,7 @@ router.get('/banks/search=:input', function(req, res, next) {
     where: { UserId: req.session.user.id, title: { [Op.iLike]: `%${input}%` } }
   })
     .then(banks => res.send(banks))
-    .catch(err => res.send(err));
+    .catch(err => res.status(400).send(err));
 });
 
 module.exports = router;
