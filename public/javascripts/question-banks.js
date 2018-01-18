@@ -32,6 +32,15 @@ const onSearch = (event, scope) => {
   }
 };
 
+// Edits title
+const onTitleChange = (event, scope) => {
+  let code = event.keyCode ? event.keyCode : event.which;
+  if (code == 13) {
+    // Edit title
+    editTitle($(scope));
+  }
+};
+
 // Add question on enter
 const onAdd = (event, scope) => {
   let code = event.keyCode ? event.keyCode : event.which;
@@ -121,6 +130,32 @@ const createQuestionBank = (bankId, bankTitle, bankQuestions, date) => {
   questionBanks.prepend(card);
 };
 
+const editTitle = scope => {
+  let title = scope;
+  let card = title.parent().parent();
+  let value = title.val().trim();
+  if (value) {
+    let newTitle = $('<h1>', { class: 'title' });
+    newTitle.text(value);
+    title.replaceWith(newTitle);
+
+    // Prevent multiple patch calls
+    card.off('click');
+
+    let update = card.find('.last-updated');
+    updateTime(update);
+
+    const bankId = card.data('id');
+    clearPleaseTryAgain();
+    axios
+      .patch('/action/bank/update-title', {
+        bankId,
+        newTitle: value
+      })
+      .catch(err => pleaseTryAgain());
+  }
+};
+
 const createQuestion = scope => {
   let questionInput = scope.prev();
   let update = scope.next();
@@ -169,7 +204,7 @@ questionBanks.on('click', '.remove-question-bank', function(event) {
 
 // Edit title
 questionBanks.on('click', 'h1', function(event) {
-  let title = $('<input>', { class: 'title', maxlength: '25' });
+  let title = $('<input>', { class: 'title', maxlength: '25', onKeyPress: 'onTitleChange(event, this)' });
   title.val($(this).text());
 
   title.click(function(event) {
@@ -178,27 +213,7 @@ questionBanks.on('click', 'h1', function(event) {
 
   let card = $(this).parent().parent();
   card.click(function() {
-    let value = title.val().trim();
-    if (value) {
-      let newTitle = $('<h1>', { class: 'title' });
-      newTitle.text(value);
-      title.replaceWith(newTitle);
-
-      // Prevent multiple patch calls
-      card.off('click');
-
-      let update = card.find('.last-updated');
-      updateTime(update);
-
-      const bankId = card.data('id');
-      clearPleaseTryAgain();
-      axios
-        .patch('/action/bank/update-title', {
-          bankId,
-          newTitle: value
-        })
-        .catch(err => pleaseTryAgain());
-    }
+    editTitle($(title));
   });
 
   $(this).replaceWith(title);
