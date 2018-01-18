@@ -86,7 +86,7 @@ router.get('/search=:input', function(req, res, next) {
 });
 
 router.get('/my-account', function(req, res, next) {
-  res.render('my-account');
+  res.render('my-account', { user: req.session.user });
 });
 
 module.exports = router;

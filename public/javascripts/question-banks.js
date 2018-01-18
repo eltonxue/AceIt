@@ -168,7 +168,7 @@ questionBanks.on('click', '.remove-question-bank', function(event) {
 
 // Edit title
 questionBanks.on('click', 'h1', function(event) {
-  let title = $('<input>', { class: 'title' });
+  let title = $('<input>', { class: 'title', maxlength: '25' });
   title.val($(this).text());
 
   title.click(function(event) {

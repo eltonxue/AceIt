@@ -367,6 +367,7 @@ input {
 }
 
 .list-group-item {
+  word-break: break-all;
   transition-property: background-color;
   transition-duration: .1s;
   transition-timing-function: linear;
